@@ -1,3 +1,4 @@
+import { LoggerFactory } from '@/core/logger';
 import { makeAutoObservable } from 'mobx';
 
 export interface MonthData {
@@ -36,6 +37,7 @@ export class CalendarViewModel {
     ];
 
     isFabOpen = false;
+    private logger = LoggerFactory.createLogger('CalendarViewModel');
 
     constructor() {
         makeAutoObservable(this);
@@ -46,8 +48,8 @@ export class CalendarViewModel {
     }
 
     toggleFab() {
-        console.log('toggleFab called, current state:', this.isFabOpen);
+        this.logger.info('toggleFab called, current state:', this.isFabOpen);
         this.isFabOpen = !this.isFabOpen;
-        console.log('new state:', this.isFabOpen);
+        this.logger.info('new state:', this.isFabOpen);
     }
 }
