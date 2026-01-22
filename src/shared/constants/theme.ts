@@ -19,11 +19,18 @@ export const Colors = {
   },
   dark: {
     text: '#ECEDEE',
-    background: '#151718',
+    background: '#0F1014', // Deeper base background
+    surface: '#1E1F26',    // Card background
     tint: tintColorDark,
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
+    primary: '#4D81F7',    // Vibrant blue (FAB / Primary action)
+    income: '#4CAF50',
+    expense: '#F44336',
+    accent: '#8B5CF6',     // Purple accent
+    gradientStart: '#1A1C2E',
+    gradientEnd: '#0F1014',
   },
 };
 
