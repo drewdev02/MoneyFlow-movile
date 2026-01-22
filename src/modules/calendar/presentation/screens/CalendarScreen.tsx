@@ -3,6 +3,7 @@ import { useInjection } from '@/shared/hooks/use-injection';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -21,6 +22,7 @@ import { CalendarViewModel } from '../viewmodels/CalendarViewModel';
 
 export const CalendarScreen = observer(() => {
     const insets = useSafeAreaInsets();
+    const router = useRouter();
     const vm = useInjection(CalendarViewModel);
     const animation = useSharedValue(0);
 
@@ -206,7 +208,13 @@ export const CalendarScreen = observer(() => {
                     style={[styles.expandedButtons, expandedStyles]}
                     pointerEvents={vm.isFabOpen ? 'auto' : 'none'}
                 >
-                    <TouchableOpacity style={styles.expandedButton}>
+                    <TouchableOpacity
+                        style={styles.expandedButton}
+                        onPress={() => {
+                            vm.toggleFab();
+                            router.push('/plan-expense');
+                        }}
+                    >
                         <View style={[styles.expandedIconContainer, { backgroundColor: 'rgba(244, 67, 54, 0.1)' }]}>
                             <Ionicons name="trending-down" size={20} color={Colors.dark.expense} />
                         </View>
