@@ -35,11 +35,19 @@ export class CalendarViewModel {
         },
     ];
 
+    isFabOpen = false;
+
     constructor() {
         makeAutoObservable(this);
     }
 
     setSelectedMonth(month: string) {
         this.selectedMonth = month;
+    }
+
+    toggleFab() {
+        console.log('toggleFab called, current state:', this.isFabOpen);
+        this.isFabOpen = !this.isFabOpen;
+        console.log('new state:', this.isFabOpen);
     }
 }

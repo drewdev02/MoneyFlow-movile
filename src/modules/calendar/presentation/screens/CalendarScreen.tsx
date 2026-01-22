@@ -6,8 +6,15 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Animated, {
+    interpolate,
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CalendarViewModel } from '../viewmodels/CalendarViewModel';
+
 
 
 // const { width } = Dimensions.get('window');
@@ -15,6 +22,33 @@ import { CalendarViewModel } from '../viewmodels/CalendarViewModel';
 export const CalendarScreen = observer(() => {
     const insets = useSafeAreaInsets();
     const vm = useInjection(CalendarViewModel);
+    const animation = useSharedValue(0);
+
+    React.useEffect(() => {
+        animation.value = withSpring(vm.isFabOpen ? 1 : 0, {
+            damping: 12,
+            stiffness: 200, // Increased stiffness for more speed
+            mass: 0.5,      // Reduced mass for less inertia
+        });
+    }, [vm.isFabOpen, animation]);
+
+    const expandedStyles = useAnimatedStyle(() => {
+        return {
+            opacity: animation.value,
+            transform: [
+                { translateY: interpolate(animation.value, [0, 1], [20, 0]) },
+                { scale: interpolate(animation.value, [0, 1], [0.8, 1]) },
+            ],
+        };
+    });
+
+    const fabIconStyle = useAnimatedStyle(() => {
+        return {
+            transform: [
+                { rotate: `${interpolate(animation.value, [0, 1], [0, 45])}deg` },
+            ],
+        };
+    });
 
     const renderMonthItem = ({ item }: { item: { label: string, value: string } }) => {
         const isSelected = item.value === vm.selectedMonth;
@@ -151,12 +185,52 @@ export const CalendarScreen = observer(() => {
                 </TouchableOpacity>
             </View>
 
-            {/* FAB */}
-            <TouchableOpacity
-                style={[styles.fab, { bottom: 85 + insets.bottom }]}
+
+            {/* FAB Overlay Background */}
+            {vm.isFabOpen && (
+                <TouchableOpacity
+                    activeOpacity={1}
+                    style={StyleSheet.absoluteFill}
+                    onPress={() => vm.toggleFab()}
+                >
+                    <View style={styles.overlay} />
+                </TouchableOpacity>
+            )}
+
+            {/* Expanded Buttons */}
+            <View
+                style={[styles.fabContainer, { bottom: 85 + insets.bottom }]}
+                pointerEvents="box-none"
             >
-                <Ionicons name="add" size={32} color="white" />
-            </TouchableOpacity>
+                <Animated.View
+                    style={[styles.expandedButtons, expandedStyles]}
+                    pointerEvents={vm.isFabOpen ? 'auto' : 'none'}
+                >
+                    <TouchableOpacity style={styles.expandedButton}>
+                        <View style={[styles.expandedIconContainer, { backgroundColor: 'rgba(244, 67, 54, 0.1)' }]}>
+                            <Ionicons name="trending-down" size={20} color={Colors.dark.expense} />
+                        </View>
+                        <Text style={styles.expandedButtonText}>Expense</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.expandedButton}>
+                        <View style={[styles.expandedIconContainer, { backgroundColor: 'rgba(76, 175, 80, 0.1)' }]}>
+                            <Ionicons name="trending-up" size={20} color={Colors.dark.income} />
+                        </View>
+                        <Text style={styles.expandedButtonText}>Income</Text>
+                    </TouchableOpacity>
+                </Animated.View>
+
+                {/* FAB */}
+                <TouchableOpacity
+                    style={styles.fab}
+                    onPress={() => vm.toggleFab()}
+                >
+                    <Animated.View style={fabIconStyle}>
+                        <Ionicons name={vm.isFabOpen ? "close" : "add"} size={32} color="white" />
+                    </Animated.View>
+                </TouchableOpacity>
+            </View>
         </LinearGradient>
     );
 });
@@ -334,12 +408,16 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         marginLeft: 8,
     },
-    fab: {
+    fabContainer: {
         position: 'absolute',
         right: 20,
+        alignItems: 'flex-end',
+        zIndex: 999,
+    },
+    fab: {
         width: 60,
         height: 60,
-        borderRadius: 18,
+        borderRadius: 20,
         backgroundColor: Colors.dark.primary,
         justifyContent: 'center',
         alignItems: 'center',
@@ -348,5 +426,40 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.4,
         shadowRadius: 8,
+    },
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    },
+    expandedButtons: {
+        marginBottom: 16,
+        alignItems: 'flex-end',
+    },
+    expandedButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#1E293B',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 25,
+        marginBottom: 12,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    expandedIconContainer: {
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+    },
+    expandedButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: '600',
     },
 });
