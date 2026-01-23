@@ -1,6 +1,8 @@
+import { AppRoutes } from '@/shared/types/routes';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Account } from '../../domain/models/Account';
 
 interface Props {
@@ -8,8 +10,17 @@ interface Props {
 }
 
 export const AccountItem = ({ account }: Props) => {
+    const router = useRouter();
+
+    const handlePress = () => {
+        router.push({
+            pathname: AppRoutes.ACCOUNT_DETAIL as any,
+            params: { id: account.id }
+        });
+    };
+
     return (
-        <View style={styles.container}>
+        <TouchableOpacity onPress={handlePress} style={styles.container}>
             <View style={styles.leftContent}>
                 <View style={[styles.iconContainer, { backgroundColor: account.color }]}>
                     <Ionicons name={account.icon as any} size={20} color="white" />
@@ -19,7 +30,7 @@ export const AccountItem = ({ account }: Props) => {
             <Text style={[styles.amount, { color: account.color }]}>
                 ${account.balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </Text>
-        </View>
+        </TouchableOpacity>
     );
 };
 

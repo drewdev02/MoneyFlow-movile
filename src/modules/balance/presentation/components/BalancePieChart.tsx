@@ -27,7 +27,7 @@ export const BalancePieChart = ({ accounts, totalBalance }: Props) => {
                 strokeWidth={0}
                 showText
                 textColor="white"
-                textSize={10}
+                textSize={12}
                 backgroundColor="transparent"
                 labelsPosition='outward'
                 centerLabelComponent={() => (

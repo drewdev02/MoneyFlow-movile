@@ -3,9 +3,13 @@ import { AuthRepositoryImpl } from '@/modules/auth/data/repositories/AuthReposit
 import { AuthRepository } from '@/modules/auth/domain/repositories/AuthRepository';
 import { LoginUseCase } from '@/modules/auth/domain/usecases/LoginUseCase';
 import { LoginViewModel } from '@/modules/auth/presentation/viewmodels/LoginViewModel';
+import { AccountRepositoryImpl } from '@/modules/balance/data/repositories/AccountRepositoryImpl';
 import { BalanceRepositoryImpl } from '@/modules/balance/data/repositories/BalanceRepositoryImpl';
+import { AccountRepository } from '@/modules/balance/domain/repositories/AccountRepository';
 import { BalanceRepository } from '@/modules/balance/domain/repositories/BalanceRepository';
+import { GetAccountDetailUseCase } from '@/modules/balance/domain/usecases/GetAccountDetailUseCase';
 import { GetAccountsUseCase } from '@/modules/balance/domain/usecases/GetAccountsUseCase';
+import { AccountDetailViewModel } from '@/modules/balance/presentation/viewmodels/AccountDetailViewModel';
 import { BalanceViewModel } from '@/modules/balance/presentation/viewmodels/BalanceViewModel';
 import { CalendarViewModel } from '@/modules/calendar/presentation/viewmodels/CalendarViewModel';
 import { CategoryRepositoryImpl } from '@/modules/categories/data/repositories/CategoryRepositoryImpl';
@@ -60,3 +64,6 @@ container.bind<CreateGoalViewModel>(CreateGoalViewModel).toResolvedValue(() => n
 container.bind<BalanceRepository>(BalanceRepository).toResolvedValue(() => new BalanceRepositoryImpl());
 container.bind<GetAccountsUseCase>(GetAccountsUseCase).toResolvedValue(() => new GetAccountsUseCase(container.get(BalanceRepository)));
 container.bind<BalanceViewModel>(BalanceViewModel).toResolvedValue(() => new BalanceViewModel(container.get(GetAccountsUseCase)));
+container.bind<AccountRepository>(AccountRepository).toResolvedValue(() => new AccountRepositoryImpl());
+container.bind<GetAccountDetailUseCase>(GetAccountDetailUseCase).toResolvedValue(() => new GetAccountDetailUseCase(container.get(AccountRepository)));
+container.bind<AccountDetailViewModel>(AccountDetailViewModel).toResolvedValue(() => new AccountDetailViewModel(container.get(GetAccountDetailUseCase)));
