@@ -71,3 +71,7 @@ src/
 | Wallets | Goals | Calendar |
 |---|---|---|
 | ![Wallets](screenshots/wallets.png) | ![Goals](screenshots/goals.png) | ![Calendar](screenshots/calendar.png) |
+
+| Add Transaction | Add Expense | Add Income |
+|---|---|---|
+| ![Add Transaction](screenshots/addTransaction.png) | ![Add Expense](screenshots/addExpense.png) | ![Add Income](screenshots/addIncome.png) |
