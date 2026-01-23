@@ -57,14 +57,13 @@ The project follows a **Modular Clean Architecture** with **MVVM** pattern:
 
 ```bash
 src/
-├── app/            # App setup, DI container, navigation
+├── core/            # App setup, DI container, navigation
 ├── modules/        # Feature modules (Auth, Expenses, etc.)
 │   ├── [module]/
 │   │   ├── domain/       # Models, UseCases, Repository Interfaces
 │   │   ├── data/         # API, Mappers, Repository Implementations
 │   │   └── presentation/ # Screens, Components, ViewModels
 ├── shared/         # Shared UI, hooks, utils
-└── index.tsx       # Entry point
 ```
 
 ## Screenshots
