@@ -1,4 +1,8 @@
-import { bindAuthModule } from '@/modules/auth/di/authBindings';
+import { AuthApi } from '@/modules/auth/data/api/AuthApi';
+import { AuthRepositoryImpl } from '@/modules/auth/data/repositories/AuthRepositoryImpl';
+import { AuthRepository } from '@/modules/auth/domain/repositories/AuthRepository';
+import { LoginUseCase } from '@/modules/auth/domain/usecases/LoginUseCase';
+import { LoginViewModel } from '@/modules/auth/presentation/viewmodels/LoginViewModel';
 import { CalendarViewModel } from '@/modules/calendar/presentation/viewmodels/CalendarViewModel';
 import { CategoryRepositoryImpl } from '@/modules/categories/data/repositories/CategoryRepositoryImpl';
 import { CategoryRepository } from '@/modules/categories/domain/repositories/CategoryRepository';
@@ -8,7 +12,12 @@ import { ExpenseRepositoryImpl } from '@/modules/expenses/data/repositories/Expe
 import { ExpenseRepository } from '@/modules/expenses/domain/repositories/ExpenseRepository';
 import { CreateExpenseUseCase } from '@/modules/expenses/domain/usecases/CreateExpenseUseCase';
 import { PlanExpenseViewModel } from '@/modules/expenses/presentation/viewmodels/PlanExpenseViewModel';
-import { bindGoalsModule } from '@/modules/goals/di/goalsBindings';
+import { GoalRepositoryImpl } from '@/modules/goals/data/repositories/GoalRepositoryImpl';
+import { GoalRepository } from '@/modules/goals/domain/repositories/GoalRepository';
+import { CreateGoalUseCase } from '@/modules/goals/domain/usecases/CreateGoalUseCase';
+import { GetGoalsUseCase } from '@/modules/goals/domain/usecases/GetGoalsUseCase';
+import { CreateGoalViewModel } from '@/modules/goals/presentation/viewmodels/CreateGoalViewModel';
+import { GoalsViewModel } from '@/modules/goals/presentation/viewmodels/GoalsViewModel';
 import { IncomeRepositoryImpl } from '@/modules/income/data/repositories/IncomeRepositoryImpl';
 import { IncomeRepository } from '@/modules/income/domain/repositories/IncomeRepository';
 import { CreateIncomeUseCase } from '@/modules/income/domain/usecases/CreateIncomeUseCase';
@@ -19,23 +28,28 @@ import { ProfileViewModel } from '@/modules/profile/presentation/viewmodels/Prof
 import { bindingScopeValues, Container } from 'inversify';
 
 export const container = new Container({
-     defaultScope: bindingScopeValues.Singleton,
-     autobind: true 
-    });
+    defaultScope: bindingScopeValues.Singleton,
+    autobind: true
+});
+
+
 container.bind<CalendarViewModel>(CalendarViewModel).toResolvedValue(() => new CalendarViewModel());
 container.bind<ExpenseRepository>(ExpenseRepository).toResolvedValue(() => new ExpenseRepositoryImpl());
 container.bind<CreateExpenseUseCase>(CreateExpenseUseCase).toResolvedValue(() => new CreateExpenseUseCase(container.get(ExpenseRepository)));
 container.bind<PlanExpenseViewModel>(PlanExpenseViewModel).toResolvedValue(() => new PlanExpenseViewModel(container.get(CreateExpenseUseCase)));
-
 container.bind<CategoryRepository>(CategoryRepository).toResolvedValue(() => new CategoryRepositoryImpl());
 container.bind<GetCategoriesUseCase>(GetCategoriesUseCase).toResolvedValue(() => new GetCategoriesUseCase(container.get(CategoryRepository)));
 container.bind<CategoryViewModel>(CategoryViewModel).toResolvedValue(() => new CategoryViewModel(container.get(GetCategoriesUseCase)));
-
 container.bind<IncomeRepository>(IncomeRepository).toResolvedValue(() => new IncomeRepositoryImpl());
 container.bind<CreateIncomeUseCase>(CreateIncomeUseCase).toResolvedValue(() => new CreateIncomeUseCase(container.get(IncomeRepository)));
 container.bind<PlanIncomeViewModel>(PlanIncomeViewModel).toResolvedValue(() => new PlanIncomeViewModel(container.get(CreateIncomeUseCase)));
-
 container.bind<ProfileViewModel>(ProfileViewModel).toResolvedValue(() => new ProfileViewModel());
-
-bindAuthModule(container);
-bindGoalsModule(container);
+container.bind<AuthApi>(AuthApi).toSelf();
+container.bind<AuthRepository>(AuthRepository).toResolvedValue(() => new AuthRepositoryImpl(container.get(AuthApi)))
+container.bind<LoginUseCase>(LoginUseCase).toResolvedValue(() => new LoginUseCase(container.get(AuthRepository)));
+container.bind<LoginViewModel>(LoginViewModel).toResolvedValue(() => new LoginViewModel(container.get(LoginUseCase)));
+container.bind<GoalRepository>(GoalRepository).toResolvedValue(() => new GoalRepositoryImpl());
+container.bind<GetGoalsUseCase>(GetGoalsUseCase).toResolvedValue(() => new GetGoalsUseCase(container.get(GoalRepository)));
+container.bind<CreateGoalUseCase>(CreateGoalUseCase).toResolvedValue(() => new CreateGoalUseCase(container.get(GoalRepository)));
+container.bind<GoalsViewModel>(GoalsViewModel).toResolvedValue(() => new GoalsViewModel(container.get(GetGoalsUseCase)));
+container.bind<CreateGoalViewModel>(CreateGoalViewModel).toResolvedValue(() => new CreateGoalViewModel(container.get(CreateGoalUseCase)));

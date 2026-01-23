@@ -145,19 +145,19 @@ return <LoginForm loading={vm.loading} onSubmit={vm.login} />;
 
 🔌 Inversify (DI)
 
-app/di/container.ts
+core/di/container.ts
 
 export const container = new Container({ defaultScope: 'Singleton' });
 
 
 container.bind<AuthRepository>(AuthRepository)
-  .toDynamicValue(() => new AuthRepositoryImpl());// en caso que tenga depencias lo agregas aqui
+  .toResolvedValue(() => new AuthRepositoryImpl());// en caso que tenga depencias lo agregas aqui usando container.get()
 
 container.bind<LoginUseCase>(LoginUseCase)
-  .toDynamicValue(() => new LoginUseCase());
+  .toResolvedValue(() => new LoginUseCase());
 
 container.bind<LoginViewModel>(LoginViewModel)
-  .totoDynamicValue(() => new LoginViewModel());
+  .toResolvedValue(() => new LoginViewModel());
 
 
 
@@ -180,11 +180,3 @@ export class RootStore {
 	•	Testeable (ViewModel y UseCases sin UI)
 	•	DI clara y centralizada
 	•	MobX limitado a la capa de presentación
-
-⸻
-
-Si quieres, puedo:
-	•	Ajustarla a Expo
-	•	Mostrar tests
-	•	Integrar React Navigation
-	•	Compararla con Redux Toolkit o Zustand
