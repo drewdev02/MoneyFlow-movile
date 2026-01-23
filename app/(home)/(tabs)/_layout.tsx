@@ -26,20 +26,37 @@ export default function TabsLayout() {
                 }
             ]
         }}>
-            <Tabs.Screen name="goals" options={{
-                tabBarIcon: ({ focused }) => <Ionicons
-                    name={focused ? "pie-chart" : "pie-chart-outline"}
-                    size={24}
-                    color={focused ? "white" : "#687076"}
-                />
-            }} />
-            <Tabs.Screen name="index" options={{
-                tabBarIcon: ({ focused }) => <Ionicons
-                    name={focused ? "calendar" : "calendar-outline"}
-                    size={20}
-                    color={focused ? "white" : "#687076"}
-                />
-            }} />
+            <Tabs.Screen
+                name="goals"
+                options={{
+                    tabBarIcon: ({ focused }) => <Ionicons
+                        name={focused ? "pie-chart" : "pie-chart-outline"}
+                        size={24}
+                        color={focused ? "white" : "#687076"}
+                    />
+                }}
+            />
+            <Tabs.Screen
+                name="index"
+                options={{
+                    tabBarIcon: ({ focused }) => <Ionicons
+                        name={focused ? "calendar" : "calendar-outline"}
+                        size={24}
+                        color={focused ? "white" : "#687076"}
+                    />
+                }}
+            />
+
+            <Tabs.Screen
+                name="wallet"
+                options={{
+                    tabBarIcon: ({ focused }) => <Ionicons
+                        name={focused ? "wallet" : "wallet-outline"}
+                        size={24}
+                        color={focused ? "white" : "#687076"}
+                    />
+                }}
+            />
 
         </Tabs>
     )

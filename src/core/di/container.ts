@@ -3,6 +3,10 @@ import { AuthRepositoryImpl } from '@/modules/auth/data/repositories/AuthReposit
 import { AuthRepository } from '@/modules/auth/domain/repositories/AuthRepository';
 import { LoginUseCase } from '@/modules/auth/domain/usecases/LoginUseCase';
 import { LoginViewModel } from '@/modules/auth/presentation/viewmodels/LoginViewModel';
+import { BalanceRepositoryImpl } from '@/modules/balance/data/repositories/BalanceRepositoryImpl';
+import { BalanceRepository } from '@/modules/balance/domain/repositories/BalanceRepository';
+import { GetAccountsUseCase } from '@/modules/balance/domain/usecases/GetAccountsUseCase';
+import { BalanceViewModel } from '@/modules/balance/presentation/viewmodels/BalanceViewModel';
 import { CalendarViewModel } from '@/modules/calendar/presentation/viewmodels/CalendarViewModel';
 import { CategoryRepositoryImpl } from '@/modules/categories/data/repositories/CategoryRepositoryImpl';
 import { CategoryRepository } from '@/modules/categories/domain/repositories/CategoryRepository';
@@ -53,3 +57,6 @@ container.bind<GetGoalsUseCase>(GetGoalsUseCase).toResolvedValue(() => new GetGo
 container.bind<CreateGoalUseCase>(CreateGoalUseCase).toResolvedValue(() => new CreateGoalUseCase(container.get(GoalRepository)));
 container.bind<GoalsViewModel>(GoalsViewModel).toResolvedValue(() => new GoalsViewModel(container.get(GetGoalsUseCase)));
 container.bind<CreateGoalViewModel>(CreateGoalViewModel).toResolvedValue(() => new CreateGoalViewModel(container.get(CreateGoalUseCase)));
+container.bind<BalanceRepository>(BalanceRepository).toResolvedValue(() => new BalanceRepositoryImpl());
+container.bind<GetAccountsUseCase>(GetAccountsUseCase).toResolvedValue(() => new GetAccountsUseCase(container.get(BalanceRepository)));
+container.bind<BalanceViewModel>(BalanceViewModel).toResolvedValue(() => new BalanceViewModel(container.get(GetAccountsUseCase)));
