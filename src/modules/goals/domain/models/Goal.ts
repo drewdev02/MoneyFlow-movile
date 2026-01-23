@@ -6,4 +6,7 @@ export interface Goal {
   icon: string;
   color: string;
   category: string;
+  notes?: string;
+  date: string;
+  imageUrl?: string;
 }

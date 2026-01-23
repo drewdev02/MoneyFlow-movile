@@ -11,6 +11,7 @@ export class GoalRepositoryImpl extends GoalRepository {
       icon: 'desktop-outline',
       color: '#FF8C00', // Orange as seen in image
       category: 'Electronics',
+      date: new Date().toISOString(),
     },
   ];
 
@@ -28,11 +29,20 @@ export class GoalRepositoryImpl extends GoalRepository {
             icon: 'cash-outline',
             color: '#4CAF50',
             category: 'Finance',
+            date: new Date().toISOString(),
         }
     ];
   }
 
   async getLent(): Promise<Goal[]> {
     return [];
+  }
+
+  async createGoal(goal: Omit<Goal, 'id'>): Promise<void> {
+    const newGoal: Goal = {
+        ...goal,
+        id: Math.random().toString(36).substr(2, 9),
+    };
+    this.goals.push(newGoal);
   }
 }

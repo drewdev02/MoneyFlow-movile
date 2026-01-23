@@ -6,4 +6,5 @@ export enum AppRoutes {
   PROFILE = "(profile)/",
   LOGIN = "(auth)/login",
   GOALS = "(home)/goals",
+  CREATE_GOAL = "(home)/create-goal",
 }

@@ -10,6 +10,7 @@ export function HomeLayout() {
             />
             <Stack.Screen name="plan-expense" />
             <Stack.Screen name="plan-income" />
+            <Stack.Screen name="create-goal" />
         </Stack>
     )
 }

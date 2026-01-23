@@ -93,7 +93,10 @@ export const GoalsScreen = observer(() => {
             </ScrollView>
 
             {/* FAB */}
-            <TouchableOpacity style={[styles.fab, { bottom: 85 + insets.bottom }]}>
+            <TouchableOpacity
+                style={[styles.fab, { bottom: 85 + insets.bottom }]}
+                onPress={() => router.push(AppRoutes.CREATE_GOAL as any)}
+            >
                 <Ionicons name="add" size={32} color="white" />
             </TouchableOpacity>
 
