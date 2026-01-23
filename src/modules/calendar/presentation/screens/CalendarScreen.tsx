@@ -1,17 +1,18 @@
-import {Colors} from '@/shared/constants/theme';
-import {useInjection} from '@/shared/hooks/use-injection';
-import {AppRoutes} from '@/shared/types/routes';
-import {Ionicons} from '@expo/vector-icons';
-import {Image} from 'expo-image';
-import {LinearGradient} from 'expo-linear-gradient';
-import {useRouter} from 'expo-router';
-import {observer} from 'mobx-react-lite';
+import { Colors } from '@/shared/constants/theme';
+import { useInjection } from '@/shared/hooks/use-injection';
+import { AppRoutes } from '@/shared/types/routes';
+import { Ionicons } from '@expo/vector-icons';
+import { FlashList } from "@shopify/flash-list";
+import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
+import { observer } from 'mobx-react-lite';
 import React from 'react';
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Animated, {interpolate, useAnimatedStyle, useSharedValue, withSpring} from 'react-native-reanimated';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {CalendarViewModel} from '../viewmodels/CalendarViewModel';
-import {FlashList} from "@shopify/flash-list";
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Animated, { interpolate, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { CalendarViewModel } from '../viewmodels/CalendarViewModel';
+import { CalendarTransactionItem } from '../components/CalendarTransactionItem';
 
 
 // const { width } = Dimensions.get('window');
@@ -153,11 +154,17 @@ export const CalendarScreen = observer(() => {
                             </View>
                         </View>
 
-                        <View style={styles.weeksContainer}>
-                            {item.weeks.map((week, wIdx) => (
-                                <TouchableOpacity key={wIdx} style={styles.weekItem}>
-                                    <Text style={styles.weekText}>{week}</Text>
-                                </TouchableOpacity>
+                        <View style={styles.daysContainer}>
+                            {item.days.map((day, dIdx) => (
+                                <View key={dIdx} style={styles.daySection}>
+                                    <View style={styles.dayHeader}>
+                                        <Text style={styles.dayHeaderText}>{day.label}</Text>
+                                        <Text style={styles.dayBalanceText}>-${Math.abs(day.dayBalance).toFixed(2)}</Text>
+                                    </View>
+                                    {day.transactions.map((transaction) => (
+                                        <CalendarTransactionItem key={transaction.id} transaction={transaction} />
+                                    ))}
+                                </View>
                             ))}
                         </View>
                     </View>
@@ -349,18 +356,27 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '600',
     },
-    weeksContainer: {
-        paddingVertical: 10,
-        alignItems: 'center',
+    daysContainer: {
+        paddingTop: 20,
+        paddingHorizontal: 16,
     },
-    weekItem: {
-        paddingVertical: 12,
-        width: '100%',
-        alignItems: 'center',
+    daySection: {
+        marginBottom: 20,
     },
-    weekText: {
-        color: '#687076',
-        fontSize: 16,
+    dayHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 8,
+    },
+    dayHeaderText: {
+        color: '#9BA1A6',
+        fontSize: 14,
+        fontWeight: '600',
+    },
+    dayBalanceText: {
+        color: '#9BA1A6',
+        fontSize: 14,
     },
     bottomTabs: {
         position: 'absolute',
