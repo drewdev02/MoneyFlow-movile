@@ -46,7 +46,10 @@ export const PlanExpenseScreen = observer(() => {
             <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
                 {/* Category Selector */}
                 <Text style={styles.label}>Category</Text>
-                <TouchableOpacity style={styles.selector}>
+                <TouchableOpacity
+                    style={styles.selector}
+                    onPress={() => router.push('/category-selection')}
+                >
                     <View style={styles.selectorLeft}>
                         <View style={[styles.iconCircle, { backgroundColor: '#FF5722' }]}>
                             <Ionicons name="cart" size={20} color="white" />
