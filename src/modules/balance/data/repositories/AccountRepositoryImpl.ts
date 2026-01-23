@@ -1,7 +1,8 @@
 import { AccountDetail } from "../../domain/models/AccountDetail";
 import { AccountRepository } from "../../domain/repositories/AccountRepository";
+import { Account } from "../../domain/models/Account";
 
-
+const mockAccounts: Account[] = [];
 
 export class AccountRepositoryImpl extends AccountRepository {
     async getAccountDetail(accountId: string): Promise<AccountDetail> {
@@ -51,5 +52,11 @@ export class AccountRepositoryImpl extends AccountRepository {
                 }
             ]
         };
+    }
+
+    async addAccount(account: Account): Promise<void> {
+        // Mock: just push to in-memory array
+        mockAccounts.push(account);
+        return Promise.resolve();
     }
 }

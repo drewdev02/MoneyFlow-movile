@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
+import { useRouter } from 'expo-router';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AccountItem } from '../components/AccountItem';
@@ -11,11 +12,16 @@ import { useInjection } from '@/shared/hooks/use-injection';
 import { Colors } from '@/shared/constants/theme';
 
 export const BalanceScreen = observer(() => {
-    const viewModel = useInjection(BalanceViewModel)
+    const viewModel = useInjection(BalanceViewModel);
+    const router = useRouter();
 
     useEffect(() => {
         viewModel.loadData();
     }, []);
+
+    const goToAddAccount = () => {
+        router.push('/(home)/add-account');
+    };
 
     return (
         <LinearGradient
@@ -30,7 +36,7 @@ export const BalanceScreen = observer(() => {
                         </TouchableOpacity>
                         <Text style={styles.headerTitle}>Balance</Text>
                     </View>
-                    <TouchableOpacity style={styles.addAccountButton}>
+                    <TouchableOpacity style={styles.addAccountButton} onPress={goToAddAccount}>
                         <Ionicons name="add" size={20} color="#ddd" />
                         <Text style={styles.addAccountText}>Add Account</Text>
                     </TouchableOpacity>

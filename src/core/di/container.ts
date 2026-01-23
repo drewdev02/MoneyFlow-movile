@@ -64,6 +64,12 @@ container.bind<CreateGoalViewModel>(CreateGoalViewModel).toResolvedValue(() => n
 container.bind<BalanceRepository>(BalanceRepository).toResolvedValue(() => new BalanceRepositoryImpl());
 container.bind<GetAccountsUseCase>(GetAccountsUseCase).toResolvedValue(() => new GetAccountsUseCase(container.get(BalanceRepository)));
 container.bind<BalanceViewModel>(BalanceViewModel).toResolvedValue(() => new BalanceViewModel(container.get(GetAccountsUseCase)));
+
+import { AddAccountUseCase } from '@/modules/balance/domain/usecases/AddAccountUseCase';
+import { AddAccountViewModel } from '@/modules/balance/presentation/viewmodels/AddAccountViewModel';
+
 container.bind<AccountRepository>(AccountRepository).toResolvedValue(() => new AccountRepositoryImpl());
 container.bind<GetAccountDetailUseCase>(GetAccountDetailUseCase).toResolvedValue(() => new GetAccountDetailUseCase(container.get(AccountRepository)));
 container.bind<AccountDetailViewModel>(AccountDetailViewModel).toResolvedValue(() => new AccountDetailViewModel(container.get(GetAccountDetailUseCase)));
+container.bind<AddAccountUseCase>(AddAccountUseCase).toResolvedValue(() => new AddAccountUseCase(container.get(AccountRepository)));
+container.bind<AddAccountViewModel>(AddAccountViewModel).toResolvedValue(() => new AddAccountViewModel(container.get(AddAccountUseCase)));
