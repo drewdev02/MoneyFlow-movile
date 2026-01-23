@@ -1,8 +1,6 @@
-import { inject, injectable } from 'inversify';
 import { Expense } from '../models/Expense';
 import { ExpenseRepository } from '../repositories/ExpenseRepository';
 
-@injectable()
 export class CreateExpenseUseCase {
   constructor(
  private expenseRepository: ExpenseRepository

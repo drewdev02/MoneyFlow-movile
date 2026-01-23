@@ -1,8 +1,6 @@
-import { injectable } from 'inversify';
 import { Expense } from '../../domain/models/Expense';
 import { ExpenseRepository } from '../../domain/repositories/ExpenseRepository';
 
-@injectable()
 export class ExpenseRepositoryImpl extends ExpenseRepository {
   private expenses: Expense[] = [];
 

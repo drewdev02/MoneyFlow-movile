@@ -1,8 +1,6 @@
-import { injectable } from 'inversify';
 import { makeAutoObservable } from 'mobx';
 import { CreateIncomeUseCase } from '../../domain/usecases/CreateIncomeUseCase';
 
-@injectable()
 export class PlanIncomeViewModel {
   category = 'Salary';
   amount = '';

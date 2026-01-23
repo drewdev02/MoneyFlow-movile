@@ -1,8 +1,6 @@
-import { injectable } from 'inversify';
 import { Category } from '../../domain/models/Category';
 import { CategoryRepository } from '../../domain/repositories/CategoryRepository';
 
-@injectable()
 export class CategoryRepositoryImpl extends CategoryRepository {
   async getCategories(): Promise<Category[]> {
     return [

@@ -1,5 +1,6 @@
 import { Colors } from '@/shared/constants/theme';
 import { useInjection } from '@/shared/hooks/use-injection';
+import { AppRoutes } from '@/shared/types/routes';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
@@ -48,7 +49,7 @@ export const PlanExpenseScreen = observer(() => {
                 <Text style={styles.label}>Category</Text>
                 <TouchableOpacity
                     style={styles.selector}
-                    onPress={() => router.push('/category-selection')}
+                    onPress={() => router.push(AppRoutes.CATEGORY_SELECTION as any)}
                 >
                     <View style={styles.selectorLeft}>
                         <View style={[styles.iconCircle, { backgroundColor: '#FF5722' }]}>

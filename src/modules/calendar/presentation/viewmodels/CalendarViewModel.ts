@@ -37,7 +37,7 @@ export class CalendarViewModel {
     ];
 
     isFabOpen = false;
-    private logger = LoggerFactory.createLogger('CalendarViewModel');
+    private logger = LoggerFactory.createLogger(CalendarViewModel.name);
 
     constructor() {
         makeAutoObservable(this);

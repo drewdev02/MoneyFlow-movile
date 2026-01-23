@@ -1,5 +1,6 @@
 import { Colors } from '@/shared/constants/theme';
 import { useInjection } from '@/shared/hooks/use-injection';
+import { AppRoutes } from '@/shared/types/routes';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -75,9 +76,13 @@ export const CalendarScreen = observer(() => {
             <View style={styles.header}>
                 <View style={styles.headerTop}>
                     <View style={styles.headerLeft}>
-                        <TouchableOpacity style={styles.iconButton}>
+                        <TouchableOpacity
+                            style={styles.iconButton}
+                            onPress={() => router.push(AppRoutes.PROFILE as any)}
+                        >
                             <Ionicons name="person-outline" size={24} color={Colors.dark.text} />
                         </TouchableOpacity>
+
                         <TouchableOpacity style={styles.iconButton}>
                             <Ionicons name="wallet-outline" size={24} color={Colors.dark.text} />
                         </TouchableOpacity>
@@ -212,7 +217,7 @@ export const CalendarScreen = observer(() => {
                         style={styles.expandedButton}
                         onPress={() => {
                             vm.toggleFab();
-                            router.push('/plan-expense');
+                            router.push(AppRoutes.PLAN_EXPENSE as any);
                         }}
                     >
                         <View style={[styles.expandedIconContainer, { backgroundColor: 'rgba(244, 67, 54, 0.1)' }]}>
@@ -225,7 +230,7 @@ export const CalendarScreen = observer(() => {
                         style={styles.expandedButton}
                         onPress={() => {
                             vm.toggleFab();
-                            router.push('/plan-income');
+                            router.push(AppRoutes.PLAN_INCOME as any);
                         }}
                     >
                         <View style={[styles.expandedIconContainer, { backgroundColor: 'rgba(76, 175, 80, 0.1)' }]}>

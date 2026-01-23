@@ -1,8 +1,6 @@
-import { injectable } from 'inversify';
 import { makeAutoObservable } from 'mobx';
 import { CreateExpenseUseCase } from '../../domain/usecases/CreateExpenseUseCase';
 
-@injectable()
 export class PlanExpenseViewModel {
   category = 'Supermarket';
   amount = '';
