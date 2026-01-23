@@ -1,3 +1,4 @@
+import { bindingScopeValues, Container } from 'inversify';
 import { AuthApi } from '@/modules/auth/data/api/AuthApi';
 import { AuthRepositoryImpl } from '@/modules/auth/data/repositories/AuthRepositoryImpl';
 import { AuthRepository } from '@/modules/auth/domain/repositories/AuthRepository';
@@ -31,9 +32,8 @@ import { IncomeRepository } from '@/modules/income/domain/repositories/IncomeRep
 import { CreateIncomeUseCase } from '@/modules/income/domain/usecases/CreateIncomeUseCase';
 import { PlanIncomeViewModel } from '@/modules/income/presentation/viewmodels/PlanIncomeViewModel';
 import { ProfileViewModel } from '@/modules/profile/presentation/viewmodels/ProfileViewModel';
-
-
-import { bindingScopeValues, Container } from 'inversify';
+import { AddAccountUseCase } from '@/modules/balance/domain/usecases/AddAccountUseCase';
+import { AddAccountViewModel } from '@/modules/balance/presentation/viewmodels/AddAccountViewModel';
 
 export const container = new Container({
     defaultScope: bindingScopeValues.Singleton,
@@ -65,8 +65,7 @@ container.bind<BalanceRepository>(BalanceRepository).toResolvedValue(() => new B
 container.bind<GetAccountsUseCase>(GetAccountsUseCase).toResolvedValue(() => new GetAccountsUseCase(container.get(BalanceRepository)));
 container.bind<BalanceViewModel>(BalanceViewModel).toResolvedValue(() => new BalanceViewModel(container.get(GetAccountsUseCase)));
 
-import { AddAccountUseCase } from '@/modules/balance/domain/usecases/AddAccountUseCase';
-import { AddAccountViewModel } from '@/modules/balance/presentation/viewmodels/AddAccountViewModel';
+
 
 container.bind<AccountRepository>(AccountRepository).toResolvedValue(() => new AccountRepositoryImpl());
 container.bind<GetAccountDetailUseCase>(GetAccountDetailUseCase).toResolvedValue(() => new GetAccountDetailUseCase(container.get(AccountRepository)));
