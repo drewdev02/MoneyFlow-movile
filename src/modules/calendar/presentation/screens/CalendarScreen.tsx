@@ -221,7 +221,13 @@ export const CalendarScreen = observer(() => {
                         <Text style={styles.expandedButtonText}>Expense</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.expandedButton}>
+                    <TouchableOpacity
+                        style={styles.expandedButton}
+                        onPress={() => {
+                            vm.toggleFab();
+                            router.push('/plan-income');
+                        }}
+                    >
                         <View style={[styles.expandedIconContainer, { backgroundColor: 'rgba(76, 175, 80, 0.1)' }]}>
                             <Ionicons name="trending-up" size={20} color={Colors.dark.income} />
                         </View>
