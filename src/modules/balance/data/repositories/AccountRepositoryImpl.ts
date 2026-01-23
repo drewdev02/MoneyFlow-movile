@@ -1,6 +1,6 @@
+import { Account } from "../../domain/models/Account";
 import { AccountDetail } from "../../domain/models/AccountDetail";
 import { AccountRepository } from "../../domain/repositories/AccountRepository";
-import { Account } from "../../domain/models/Account";
 
 const mockAccounts: Account[] = [];
 

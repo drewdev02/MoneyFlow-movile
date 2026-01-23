@@ -1,15 +1,15 @@
+import { Colors } from '@/shared/constants/theme';
+import { useInjection } from '@/shared/hooks/use-injection';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
-import { useRouter } from 'expo-router';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AccountItem } from '../components/AccountItem';
 import { BalancePieChart } from '../components/BalancePieChart';
 import { BalanceViewModel } from '../viewmodels/BalanceViewModel';
-import { useInjection } from '@/shared/hooks/use-injection';
-import { Colors } from '@/shared/constants/theme';
 
 export const BalanceScreen = observer(() => {
     const viewModel = useInjection(BalanceViewModel);

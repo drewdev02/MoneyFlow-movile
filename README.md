@@ -66,3 +66,9 @@ src/
 ├── shared/         # Shared UI, hooks, utils
 └── index.tsx       # Entry point
 ```
+
+## Screenshots
+
+| Wallets | Goals | Calendar |
+|---|---|---|
+| ![Wallets](screenshots/wallets.png) | ![Goals](screenshots/goals.png) | ![Calendar](screenshots/calendar.png) |
