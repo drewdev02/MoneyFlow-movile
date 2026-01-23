@@ -7,13 +7,14 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AccountDetailViewModel } from '../viewmodels/AccountDetailViewModel';
 
 export const AccountDetailScreen = observer(() => {
     const { id } = useLocalSearchParams<{ id: string }>();
     const router = useRouter();
     const viewModel = useInjection(AccountDetailViewModel);
+    const insets = useSafeAreaInsets();
 
     useEffect(() => {
         if (id) {
@@ -44,14 +45,13 @@ export const AccountDetailScreen = observer(() => {
             colors={[Colors.dark.gradientStart, Colors.dark.gradientEnd]}
             style={styles.container}
         >
-            <SafeAreaView style={styles.safeArea}>
-                <View style={styles.header}>
+                <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
                     <TouchableOpacity onPress={() => router.back()}>
                         <Ionicons name="arrow-back" size={24} color="white" />
                     </TouchableOpacity>
                     <Text style={styles.headerTitle}>{account.name}</Text>
                     <TouchableOpacity>
-                        <Ionicons name="ellipsis-vertical" size={24} color="#ddd" />
+                        <Ionicons name="ellipsis-vertical" size={24} color="white" />
                     </TouchableOpacity>
                 </View>
 
@@ -62,7 +62,7 @@ export const AccountDetailScreen = observer(() => {
                                 source={require('@/assets/images/money.png')} // Assuming this exists or using icon
                                 style={{ width: 40, height: 40, display: 'none' }} // Placeholder if image not found
                             /> */}
-                            <Ionicons name="cash" size={30} color="#4CAF50" />
+                            <Ionicons name="cash" size={30} color={Colors.dark.income} />
                         </View>
                         <View style={styles.balanceInfo}>
                             <Text style={styles.balanceLabel}>Account balance</Text>
@@ -71,7 +71,7 @@ export const AccountDetailScreen = observer(() => {
                             </Text>
                         </View>
                         <TouchableOpacity style={styles.editButton}>
-                            <Ionicons name="pencil" size={16} color="#aaa" />
+                            <Ionicons name="pencil" size={16} color={Colors.dark.icon} />
                         </TouchableOpacity>
                     </View>
 
@@ -91,7 +91,7 @@ export const AccountDetailScreen = observer(() => {
                                 </View>
                                 <Text style={[
                                     styles.transactionAmount,
-                                    { color: transaction.type === 'income' ? '#4CAF50' : 'white' }
+                                    { color: transaction.type === 'income' ? Colors.dark.income : Colors.dark.expense }
                                 ]}>
                                     {transaction.amount < 0 ? '-' : ''}${Math.abs(transaction.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                 </Text>
@@ -100,7 +100,7 @@ export const AccountDetailScreen = observer(() => {
                     </View>
                 </ScrollView>
 
-                <View style={styles.footer}>
+                <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
                     <TouchableOpacity style={styles.okButton} onPress={() => router.back()}>
                         <Text style={styles.okButtonText}>OK</Text>
                     </TouchableOpacity>
@@ -108,7 +108,6 @@ export const AccountDetailScreen = observer(() => {
                         <Text style={styles.removeButtonText}>Remove</Text>
                     </TouchableOpacity>
                 </View>
-            </SafeAreaView>
         </LinearGradient>
     );
 });
@@ -117,14 +116,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    safeArea: {
-        flex: 1,
-    },
     loadingContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#1a1a2e',
+        backgroundColor: Colors.dark.gradientStart,
     },
     loadingText: {
         color: 'white',
@@ -134,7 +130,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 16,
-        paddingVertical: 12,
+        paddingBottom: 16,
     },
     headerTitle: {
         color: 'white',
@@ -145,7 +141,7 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     balanceCard: {
-        backgroundColor: '#2A2A3E', // Approximation of the card color
+        backgroundColor: Colors.dark.surface, // Approximation of the card color
         borderRadius: 20,
         padding: 16,
         flexDirection: 'row',
@@ -160,12 +156,12 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     balanceLabel: {
-        color: '#aaa',
+        color: Colors.dark.icon,
         fontSize: 14,
         marginBottom: 4,
     },
     balanceAmount: {
-        color: '#4CAF50',
+        color: Colors.dark.income,
         fontSize: 24,
         fontWeight: 'bold',
     },
@@ -198,7 +194,7 @@ const styles = StyleSheet.create({
         marginBottom: 4,
     },
     transactionDate: {
-        color: '#888',
+        color: Colors.dark.icon,
         fontSize: 12,
     },
     transactionAmount: {
@@ -206,11 +202,12 @@ const styles = StyleSheet.create({
         fontWeight: '600',
     },
     footer: {
-        padding: 16,
+        paddingHorizontal: 0,
+        paddingVertical: 12,
         gap: 12,
     },
     okButton: {
-        backgroundColor: '#4285F4', // Blue color
+        backgroundColor: Colors.dark.primary, // Blue color
         paddingVertical: 16,
         borderRadius: 30,
         alignItems: 'center',
@@ -225,7 +222,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     removeButtonText: {
-        color: '#E53935', // Red color
+        color: Colors.dark.expense, // Red color
         fontSize: 16,
         fontWeight: '600',
     },

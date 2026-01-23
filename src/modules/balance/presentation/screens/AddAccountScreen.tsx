@@ -1,227 +1,336 @@
+import { Colors } from '@/shared/constants/theme';
 import { useInjection } from '@/shared/hooks/use-injection';
-import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+    ActivityIndicator,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AddAccountViewModel } from '../viewmodels/AddAccountViewModel';
 
-
 const AddAccountScreen = observer(() => {
-  const navigation = useNavigation();
-  const vm = useInjection(AddAccountViewModel);
+    const insets = useSafeAreaInsets();
+    const router = useRouter();
+    const vm = useInjection(AddAccountViewModel);
 
-  return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
-      <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 32 }}>
-        <Text style={styles.title}>Add new account</Text>
-        <Text style={styles.label}>Name</Text>
-        <TextInput
-          style={styles.input}
-          value={vm.name}
-          onChangeText={vm.setName}
-          placeholder=""
-          placeholderTextColor="#888"
-        />
-        <View style={styles.toggleRow}>
-          <TouchableOpacity
-            style={[styles.toggleButton, !vm.isCredit && styles.toggleActive]}
-            onPress={() => vm.setIsCredit(false)}
-          >
-            <Text style={[styles.toggleText, !vm.isCredit && styles.toggleTextActive]}>BALANCE</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.toggleButton, vm.isCredit && styles.toggleActive]}
-            onPress={() => vm.setIsCredit(true)}
-          >
-            <Text style={[styles.toggleText, vm.isCredit && styles.toggleTextActive]}>CREDIT</Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.label}>Amount</Text>
-        <View style={styles.row}>
-          <TextInput
-            style={[styles.input, { flex: 1 }]}
-            value={vm.amount}
-            onChangeText={vm.setAmount}
-            keyboardType="numeric"
-            placeholder="Amount"
-            placeholderTextColor="#888"
-          />
-          <TouchableOpacity style={styles.currencyButton} onPress={vm.openCurrencyPicker}>
-            <Text style={styles.currencyText}>{vm.currency}</Text>
-          </TouchableOpacity>
-        </View>
-        {vm.isCredit && (
-          <>
-            <Text style={styles.label}>Credit limit</Text>
-            <View style={styles.row}>
-              <TextInput
-                style={[styles.input, { flex: 1 }]}
-                value={vm.creditLimit}
-                onChangeText={vm.setCreditLimit}
-                keyboardType="numeric"
-                placeholder="0"
-                placeholderTextColor="#888"
-              />
-              <TouchableOpacity style={styles.currencyButton} onPress={vm.openCurrencyPicker}>
-                <Text style={styles.currencyText}>{vm.currency}</Text>
-              </TouchableOpacity>
+    const handleAddAccount = async () => {
+        const success = await vm.addAccount();
+        if (success) {
+            router.back();
+        }
+    };
+
+    return (
+        <LinearGradient
+            colors={[Colors.dark.gradientStart, Colors.dark.gradientEnd]}
+            style={styles.container}
+        >
+            <View style={[styles.header, { paddingTop: insets.top + 10 }]}>
+                <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+                    <Ionicons name="arrow-back" size={24} color="white" />
+                </TouchableOpacity>
+                <Text style={styles.headerTitle}>Add new account</Text>
             </View>
-            <Text style={styles.label}>Payment date</Text>
-            <TouchableOpacity style={styles.input} onPress={vm.openPaymentDatePicker}>
-              <Text style={styles.inputText}>{vm.paymentDate || 'None'}</Text>
-            </TouchableOpacity>
-            <Text style={styles.label}>Remind</Text>
-            <TouchableOpacity style={styles.input} onPress={vm.openRemindPicker}>
-              <Text style={styles.inputText}>{vm.remindText}</Text>
-            </TouchableOpacity>
-          </>
-        )}
-        <Text style={styles.label}>Choose an icon</Text>
-        <TouchableOpacity style={styles.input} onPress={vm.openIconPicker}>
-          <Text style={styles.inputText}>{vm.iconText}</Text>
-        </TouchableOpacity>
-        <Text style={styles.label}>Account type</Text>
-        <TouchableOpacity style={styles.input} onPress={vm.openAccountTypePicker}>
-          <Text style={styles.inputText}>{vm.accountTypeText}</Text>
-        </TouchableOpacity>
-        <Text style={styles.label}>Category</Text>
-        <TouchableOpacity style={styles.input} onPress={vm.openCategoryPicker}>
-          <Text style={styles.inputText}>{vm.categoryText}</Text>
-        </TouchableOpacity>
-        <Text style={styles.label}>Color</Text>
-        <TouchableOpacity style={styles.colorBar} onPress={vm.openColorPicker}>
-          <View style={[styles.colorPreview, { backgroundColor: vm.color }]} />
-        </TouchableOpacity>
-        <Text style={styles.label}>Notes</Text>
-        <TextInput
-          style={[styles.input, { height: 60 }]}
-          value={vm.notes}
-          onChangeText={vm.setNotes}
-          placeholder=""
-          placeholderTextColor="#888"
-          multiline
-        />
-        <TouchableOpacity style={styles.addButton} onPress={vm.addAccount} disabled={vm.loading}>
-          <Text style={styles.addButtonText}>Add</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.cancelButton} onPress={() => navigation.goBack()}>
-          <Text style={styles.cancelButtonText}>Cancel</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </KeyboardAvoidingView>
-  );
+
+            <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+                <Text style={styles.label}>Name</Text>
+                <View style={styles.inputWrapper}>
+                    <TextInput
+                        style={styles.input}
+                        value={vm.name}
+                        onChangeText={vm.setName}
+                        placeholder="Account name"
+                        placeholderTextColor={Colors.dark.icon}
+                    />
+                </View>
+
+                <View style={styles.toggleRow}>
+                    <TouchableOpacity
+                        style={[styles.toggleButton, !vm.isCredit ? styles.toggleActive : {}]}
+                        onPress={() => vm.setIsCredit(false)}
+                    >
+                        <Text style={[styles.toggleText, !vm.isCredit ? styles.toggleTextActive : {}]}>BALANCE</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.toggleButton, vm.isCredit ? styles.toggleActive : {}]}
+                        onPress={() => vm.setIsCredit(true)}
+                    >
+                        <Text style={[styles.toggleText, vm.isCredit ? styles.toggleTextActive : {}]}>CREDIT</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <Text style={styles.label}>Amount</Text>
+                <View style={styles.row}>
+                    <View style={[styles.inputGroup, { flex: 1 }]}>
+                        <View style={styles.inputWrapper}>
+                            <TextInput
+                                style={styles.input}
+                                value={vm.amount}
+                                onChangeText={vm.setAmount}
+                                keyboardType="numeric"
+                                placeholder="Amount"
+                                placeholderTextColor={Colors.dark.icon}
+                            />
+                        </View>
+                    </View>
+                    <View style={[styles.inputGroup, { width: 100, marginLeft: 16 }]}>
+                        <TouchableOpacity style={styles.selector} onPress={vm.openCurrencyPicker}>
+                            <Text style={styles.selectorText}>{vm.currency}</Text>
+                            <Ionicons name="chevron-down" size={16} color={Colors.dark.icon} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                {vm.isCredit && (
+                    <>
+                        <Text style={styles.label}>Credit limit</Text>
+                        <View style={styles.row}>
+                             <View style={[styles.inputGroup, { flex: 1 }]}>
+                                <View style={styles.inputWrapper}>
+                                    <TextInput
+                                        style={styles.input}
+                                        value={vm.creditLimit}
+                                        onChangeText={vm.setCreditLimit}
+                                        keyboardType="numeric"
+                                        placeholder="0"
+                                        placeholderTextColor={Colors.dark.icon}
+                                    />
+                                </View>
+                            </View>
+                            <View style={[styles.inputGroup, { width: 100, marginLeft: 16 }]}>
+                                <TouchableOpacity style={styles.selector} onPress={vm.openCurrencyPicker}>
+                                    <Text style={styles.selectorText}>{vm.currency}</Text>
+                                    <Ionicons name="chevron-down" size={16} color={Colors.dark.icon} />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
+                        <Text style={styles.label}>Payment date</Text>
+                        <TouchableOpacity style={styles.selector} onPress={vm.openPaymentDatePicker}>
+                            <Text style={styles.selectorText}>{vm.paymentDate || 'None'}</Text>
+                            <Ionicons name="calendar-outline" size={20} color={Colors.dark.icon} />
+                        </TouchableOpacity>
+
+                        <Text style={styles.label}>Remind</Text>
+                        <TouchableOpacity style={styles.selector} onPress={vm.openRemindPicker}>
+                            <Text style={styles.selectorText}>{vm.remindText}</Text>
+                            <Ionicons name="chevron-down" size={20} color={Colors.dark.icon} />
+                        </TouchableOpacity>
+                    </>
+                )}
+
+                <Text style={styles.label}>Choose an icon</Text>
+                <TouchableOpacity style={styles.selector} onPress={vm.openIconPicker}>
+                    <Text style={styles.selectorText}>{vm.iconText}</Text>
+                    <Ionicons name="chevron-down" size={20} color={Colors.dark.icon} />
+                </TouchableOpacity>
+
+                <Text style={styles.label}>Account type</Text>
+                <TouchableOpacity style={styles.selector} onPress={vm.openAccountTypePicker}>
+                    <Text style={styles.selectorText}>{vm.accountTypeText}</Text>
+                    <Ionicons name="chevron-down" size={20} color={Colors.dark.icon} />
+                </TouchableOpacity>
+
+                <Text style={styles.label}>Category</Text>
+                <TouchableOpacity style={styles.selector} onPress={vm.openCategoryPicker}>
+                    <Text style={styles.selectorText}>{vm.categoryText}</Text>
+                    <Ionicons name="chevron-down" size={20} color={Colors.dark.icon} />
+                </TouchableOpacity>
+
+                <Text style={styles.label}>Color</Text>
+                <TouchableOpacity style={styles.colorPlaceholder} onPress={vm.openColorPicker}>
+                    <View style={[styles.colorLine, { backgroundColor: vm.color }]} />
+                </TouchableOpacity>
+
+                <Text style={styles.label}>Notes</Text>
+                <TextInput
+                    style={styles.notesInput}
+                    value={vm.notes}
+                    onChangeText={vm.setNotes}
+                    placeholder="Notes..."
+                    placeholderTextColor={Colors.dark.icon}
+                    multiline
+                />
+
+                <View style={[styles.footer, { paddingBottom: insets.bottom + 20 }]}>
+                    <TouchableOpacity
+                        style={[styles.createButton, vm.loading && styles.buttonDisabled]}
+                        onPress={handleAddAccount}
+                        disabled={vm.loading}
+                    >
+                        {vm.loading ? (
+                            <ActivityIndicator color="white" />
+                        ) : (
+                            <Text style={styles.createButtonText}>Add</Text>
+                        )}
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.cancelButton} onPress={() => router.back()}>
+                        <Text style={styles.cancelButtonText}>Cancel</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
+        </LinearGradient>
+    );
 });
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#181A20',
-    padding: 20,
-  },
-  title: {
-    color: '#fff',
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    marginTop: 8,
-  },
-  label: {
-    color: '#aaa',
-    fontSize: 14,
-    marginTop: 16,
-    marginBottom: 4,
-  },
-  input: {
-    backgroundColor: '#23243A',
-    borderRadius: 8,
-    color: '#fff',
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  inputText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  toggleRow: {
-    flexDirection: 'row',
-    marginBottom: 8,
-    marginTop: 8,
-  },
-  toggleButton: {
-    flex: 1,
-    paddingVertical: 10,
-    borderRadius: 20,
-    backgroundColor: '#23243A',
-    alignItems: 'center',
-    marginHorizontal: 2,
-  },
-  toggleActive: {
-    backgroundColor: '#1ED760',
-  },
-  toggleText: {
-    color: '#aaa',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  toggleTextActive: {
-    color: '#fff',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  currencyButton: {
-    backgroundColor: '#23243A',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    marginLeft: 8,
-  },
-  currencyText: {
-    color: '#fff',
-    fontSize: 16,
-  },
-  colorBar: {
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: '#23243A',
-    marginBottom: 8,
-    marginTop: 4,
-    justifyContent: 'center',
-  },
-  colorPreview: {
-    height: 12,
-    borderRadius: 6,
-    marginHorizontal: 4,
-    marginVertical: 2,
-  },
-  addButton: {
-    backgroundColor: '#4A90E2',
-    borderRadius: 12,
-    paddingVertical: 16,
-    alignItems: 'center',
-    marginTop: 24,
-  },
-  addButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 18,
-  },
-  cancelButton: {
-    alignItems: 'center',
-    marginTop: 16,
-  },
-  cancelButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    opacity: 0.7,
-  },
+    container: {
+        flex: 1,
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingBottom: 16,
+    },
+    backButton: {
+        padding: 8,
+        marginRight: 10,
+    },
+    headerTitle: {
+        color: 'white',
+        fontSize: 20,
+        fontWeight: '700',
+    },
+    content: {
+        paddingHorizontal: 16,
+        paddingBottom: 120,
+    },
+    label: {
+        color: '#687076',
+        fontSize: 14,
+        marginBottom: 8,
+        marginTop: 16,
+    },
+    selector: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        backgroundColor: Colors.dark.surface,
+        borderRadius: 12,
+        padding: 12,
+        borderWidth: 1,
+        borderColor: 'rgba(255, 255, 255, 0.05)',
+        height: 48,
+    },
+    selectorText: {
+        color: 'white',
+        fontSize: 16,
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+    },
+    inputGroup: {
+        marginTop: 0,
+    },
+    inputWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: Colors.dark.surface,
+        borderRadius: 12,
+        paddingHorizontal: 12,
+        borderWidth: 1,
+        borderColor: 'rgba(255, 255, 255, 0.05)',
+        height: 48,
+    },
+    input: {
+        flex: 1,
+        color: 'white',
+        fontSize: 16,
+        height: '100%',
+    },
+    footer: {
+        width: '100%',
+        paddingHorizontal: 0,
+        marginTop: 20,
+    },
+    createButton: {
+        backgroundColor: Colors.dark.primary,
+        borderRadius: 25,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 12,
+    },
+    buttonDisabled: {
+        opacity: 0.6,
+    },
+    createButtonText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: '700',
+    },
+    cancelButton: {
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    cancelButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: '600',
+    },
+    notesInput: {
+        backgroundColor: Colors.dark.surface,
+        borderRadius: 12,
+        padding: 12,
+        color: 'white',
+        fontSize: 16,
+        borderWidth: 1,
+        borderColor: 'rgba(255, 255, 255, 0.05)',
+        height: 100,
+        textAlignVertical: 'top',
+    },
+    colorPlaceholder: {
+        height: 48,
+        justifyContent: 'center',
+        paddingHorizontal: 12,
+        backgroundColor: Colors.dark.surface,
+        borderRadius: 12,
+        borderWidth: 1,
+        borderColor: 'rgba(255, 255, 255, 0.05)',
+    },
+    colorLine: {
+        height: 8,
+        borderRadius: 4,
+        width: '100%',
+    },
+    toggleRow: {
+        flexDirection: 'row',
+        marginTop: 16,
+        backgroundColor: Colors.dark.surface,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: 'rgba(255, 255, 255, 0.05)',
+        overflow: 'hidden',
+    },
+    toggleButton: {
+        flex: 1,
+        paddingVertical: 10,
+        alignItems: 'center',
+    },
+    toggleActive: {
+        backgroundColor: Colors.dark.primary,
+        borderRadius: 20,
+    },
+    toggleText: {
+        color: '#aaa',
+        fontWeight: 'bold',
+        fontSize: 16,
+    },
+    toggleTextActive: {
+        color: '#fff',
+    },
 });
 
 export default AddAccountScreen;
