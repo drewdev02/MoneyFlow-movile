@@ -5,4 +5,5 @@ export enum AppRoutes {
   PLAN_INCOME = "(home)/plan-income",
   PROFILE = "(profile)/",
   LOGIN = "(auth)/login",
+  GOALS = "(home)/goals",
 }

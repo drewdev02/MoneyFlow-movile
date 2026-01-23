@@ -8,6 +8,7 @@ import { ExpenseRepositoryImpl } from '@/modules/expenses/data/repositories/Expe
 import { ExpenseRepository } from '@/modules/expenses/domain/repositories/ExpenseRepository';
 import { CreateExpenseUseCase } from '@/modules/expenses/domain/usecases/CreateExpenseUseCase';
 import { PlanExpenseViewModel } from '@/modules/expenses/presentation/viewmodels/PlanExpenseViewModel';
+import { bindGoalsModule } from '@/modules/goals/di/goalsBindings';
 import { IncomeRepositoryImpl } from '@/modules/income/data/repositories/IncomeRepositoryImpl';
 import { IncomeRepository } from '@/modules/income/domain/repositories/IncomeRepository';
 import { CreateIncomeUseCase } from '@/modules/income/domain/usecases/CreateIncomeUseCase';
@@ -37,3 +38,4 @@ container.bind<PlanIncomeViewModel>(PlanIncomeViewModel).toResolvedValue(() => n
 container.bind<ProfileViewModel>(ProfileViewModel).toResolvedValue(() => new ProfileViewModel());
 
 bindAuthModule(container);
+bindGoalsModule(container);

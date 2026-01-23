@@ -175,8 +175,11 @@ export const CalendarScreen = observer(() => {
             </ScrollView>
 
             {/* Bottom Tabs */}
-            <View style={[styles.bottomTabs, { paddingBottom: insets.bottom + 10 }]}>
-                <TouchableOpacity style={styles.tabItem}>
+            {/* <View style={[styles.bottomTabs, { paddingBottom: insets.bottom + 10 }]}>
+                <TouchableOpacity
+                    style={styles.tabItem}
+                    onPress={() => router.push(AppRoutes.GOALS as any)}
+                >
                     <Ionicons name="pie-chart-outline" size={24} color="#687076" />
                 </TouchableOpacity>
 
@@ -190,7 +193,7 @@ export const CalendarScreen = observer(() => {
                 <TouchableOpacity style={styles.tabItem}>
                     <Ionicons name="wallet-outline" size={24} color="#687076" />
                 </TouchableOpacity>
-            </View>
+            </View> */}
 
 
             {/* FAB Overlay Background */}
