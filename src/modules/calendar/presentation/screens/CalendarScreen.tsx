@@ -48,20 +48,6 @@ export const CalendarScreen = observer(() => {
         };
     });
 
-    const renderMonthItem = ({item}: { item: { label: string, value: string } }) => {
-        const isSelected = item.value === vm.selectedMonth;
-        return (
-            <TouchableOpacity
-                style={[styles.monthItem, isSelected && styles.monthItemActive]}
-                onPress={() => vm.setSelectedMonth(item.value)}
-            >
-                <Text style={[styles.monthText, isSelected && styles.monthTextActive]}>
-                    {item.label}
-                </Text>
-            </TouchableOpacity>
-        );
-    };
-
     return (
         <LinearGradient
             colors={[Colors.dark.gradientStart, Colors.dark.gradientEnd]}
@@ -105,12 +91,23 @@ export const CalendarScreen = observer(() => {
                 <FlashList
                     horizontal
                     data={vm.months}
-                    renderItem={renderMonthItem}
+                    renderItem={({item}) => {
+                        const isSelected = item.value === vm.selectedMonth;
+                        return (
+                            <TouchableOpacity
+                                style={[styles.monthItem, isSelected && styles.monthItemActive]}
+                                onPress={() => vm.setSelectedMonth(item.value)}
+                            >
+                                <Text style={[styles.monthText, isSelected && styles.monthTextActive]}>
+                                    {item.label}
+                                </Text>
+                            </TouchableOpacity>
+                        );
+                    }}
                     keyExtractor={(item) => item.value}
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={styles.monthList}
                     initialScrollIndex={3}
-
                 />
 
                 {/* Summary Cards */}
@@ -164,28 +161,6 @@ export const CalendarScreen = observer(() => {
                     </View>
                 ))}
             </ScrollView>
-
-            {/* Bottom Tabs */}
-            {/* <View style={[styles.bottomTabs, { paddingBottom: insets.bottom + 10 }]}>
-                <TouchableOpacity
-                    style={styles.tabItem}
-                    onPress={() => router.push(AppRoutes.GOALS as any)}
-                >
-                    <Ionicons name="pie-chart-outline" size={24} color="#687076" />
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.tabItemActive}>
-                    <View style={styles.tabActiveCircle}>
-                        <Ionicons name="calendar-outline" size={20} color="white" />
-                        <Text style={styles.tabTextActive}>Calendar</Text>
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.tabItem}>
-                    <Ionicons name="wallet-outline" size={24} color="#687076" />
-                </TouchableOpacity>
-            </View> */}
-
 
             {/* FAB Overlay Background */}
             {vm.isFabOpen && (
