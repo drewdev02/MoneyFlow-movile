@@ -64,9 +64,6 @@ container.bind<CreateGoalViewModel>(CreateGoalViewModel).toResolvedValue(() => n
 container.bind<BalanceRepository>(BalanceRepository).toResolvedValue(() => new BalanceRepositoryImpl());
 container.bind<GetAccountsUseCase>(GetAccountsUseCase).toResolvedValue(() => new GetAccountsUseCase(container.get(BalanceRepository)));
 container.bind<BalanceViewModel>(BalanceViewModel).toResolvedValue(() => new BalanceViewModel(container.get(GetAccountsUseCase)));
-
-
-
 container.bind<AccountRepository>(AccountRepository).toResolvedValue(() => new AccountRepositoryImpl());
 container.bind<GetAccountDetailUseCase>(GetAccountDetailUseCase).toResolvedValue(() => new GetAccountDetailUseCase(container.get(AccountRepository)));
 container.bind<AccountDetailViewModel>(AccountDetailViewModel).toResolvedValue(() => new AccountDetailViewModel(container.get(GetAccountDetailUseCase)));

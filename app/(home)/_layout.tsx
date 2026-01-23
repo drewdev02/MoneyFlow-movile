@@ -7,7 +7,7 @@ export default function HomeLayout() {
         }}>
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="category-selection" options={{
-                presentation: 'modal',
+                presentation: 'containedModal',
             }}
             />
             <Stack.Screen name="plan-expense" />

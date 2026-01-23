@@ -14,14 +14,24 @@ export class CategoryViewModel {
   }
 
   async loadCategories() {
-    this.logger.debug("loadCategories")
-    this.loading = true;
+    this.logger.debug('loadCategories');
+
+    runInAction(() => {
+      this.loading = true;
+    });
+
     try {
-      this.categories = await this.getCategoriesUseCase.execute();
+      const result = await this.getCategoriesUseCase.execute();
+
+      runInAction(() => {
+        this.categories = result;
+      });
     } catch (error) {
       this.logger.error('Error loading categories:', error);
     } finally {
+      runInAction(() => {
         this.loading = false;
+      });
     }
   }
 }
