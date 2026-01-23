@@ -1,50 +1,68 @@
-# Welcome to your Expo app 👋
+# MoneyFlow
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+MoneyFlow is a comprehensive personal finance management application designed to help users track their income, expenses, and financial goals. Built with modern mobile technologies, it offers a clean and intuitive interface for managing personal finances.
 
-## Get started
+## Features
 
-1. Install dependencies
+The application is structured into several core modules:
+
+- **Auth**: User authentication and session management.
+- **Balance**: Overview of current financial status and account balances.
+- **Income**: Track and manage various sources of income.
+- **Expenses**: Log and categorize daily expenses.
+- **Goals**: Set and track progress towards financial goals.
+- **Calendar**: Visual overview of financial activities by date.
+- **Categories**: Manage custom categories for income and expenses.
+- **Profile**: User profile settings and preferences.
+
+## Technology Stack
+
+- **Framework**: [React Native](https://reactnative.dev/) with [Expo](https://expo.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **State Management**: [MobX](https://mobx.js.org/) (Project uses MVVM pattern)
+- **Dependency Injection**: [InversifyJS](https://inversify.io/)
+- **Navigation**: [React Navigation](https://reactnavigation.org/) / [Expo Router](https://docs.expo.dev/router/introduction/)
+- **UI Components**: `@expo/vector-icons`, `react-native-svg`
+
+## Architecture
+
+The project follows a **Modular Clean Architecture** with **MVVM** pattern:
+
+- **Domain**: Business logic and entities (Independent).
+- **Data**: repositories implementations and API calls.
+- **Presentation**: UI (Screens/Components) and ViewModels (MobX).
+- **DI**: InversifyJS used for loose coupling between layers.
+
+## Get Started
+
+1. **Install dependencies**
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. **Start the app**
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+   In the output, you'll find options to open the app in a
+   - [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+   - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+   - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+   - [Expo Go](https://expo.dev/go)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Project Structure
 
 ```bash
-npm run reset-project
+src/
+├── app/            # App setup, DI container, navigation
+├── modules/        # Feature modules (Auth, Expenses, etc.)
+│   ├── [module]/
+│   │   ├── domain/       # Models, UseCases, Repository Interfaces
+│   │   ├── data/         # API, Mappers, Repository Implementations
+│   │   └── presentation/ # Screens, Components, ViewModels
+├── shared/         # Shared UI, hooks, utils
+└── index.tsx       # Entry point
 ```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
