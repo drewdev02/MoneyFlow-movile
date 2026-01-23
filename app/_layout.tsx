@@ -10,6 +10,7 @@ export default function RootLayout() {
       <Stack.Screen name="(home)/plan-expense" />
       <Stack.Screen name="(home)/plan-income" />
       <Stack.Screen name="(profile)/index" />
+      <Stack.Screen name="(auth)/login" />
     </Stack>
 
   )

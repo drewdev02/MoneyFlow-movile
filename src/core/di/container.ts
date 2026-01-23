@@ -1,3 +1,4 @@
+import { bindAuthModule } from '@/modules/auth/di/authBindings';
 import { CalendarViewModel } from '@/modules/calendar/presentation/viewmodels/CalendarViewModel';
 import { CategoryRepositoryImpl } from '@/modules/categories/data/repositories/CategoryRepositoryImpl';
 import { CategoryRepository } from '@/modules/categories/domain/repositories/CategoryRepository';
@@ -12,6 +13,7 @@ import { IncomeRepository } from '@/modules/income/domain/repositories/IncomeRep
 import { CreateIncomeUseCase } from '@/modules/income/domain/usecases/CreateIncomeUseCase';
 import { PlanIncomeViewModel } from '@/modules/income/presentation/viewmodels/PlanIncomeViewModel';
 import { ProfileViewModel } from '@/modules/profile/presentation/viewmodels/ProfileViewModel';
+
 
 import { bindingScopeValues, Container } from 'inversify';
 
@@ -33,3 +35,5 @@ container.bind<CreateIncomeUseCase>(CreateIncomeUseCase).toResolvedValue(() => n
 container.bind<PlanIncomeViewModel>(PlanIncomeViewModel).toResolvedValue(() => new PlanIncomeViewModel(container.get(CreateIncomeUseCase)));
 
 container.bind<ProfileViewModel>(ProfileViewModel).toResolvedValue(() => new ProfileViewModel());
+
+bindAuthModule(container);
