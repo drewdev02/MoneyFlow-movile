@@ -134,12 +134,14 @@ export const CalendarScreen = observer(() => {
             </View>
 
             {/* Content */}
-            <ScrollView
+            <FlashList
+                data={vm.calendarList}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.content}
-            >
-                {vm.calendarList.map((month, idx) => (
-                    <View key={idx} style={styles.monthSection}>
+                initialScrollIndex={vm.currentMonthIndex}
+                keyExtractor={(item) => `${item.month}-${item.year}`}
+                renderItem={({item}) => (
+                    <View style={styles.monthSection}>
                         <View style={styles.illustrationContainer}>
                             <Image
                                 source={require('../../../../../assets/images/calendar_landscape.png')}
@@ -147,20 +149,20 @@ export const CalendarScreen = observer(() => {
                                 contentFit="cover"
                             />
                             <View style={styles.monthBadge}>
-                                <Text style={styles.monthBadgeText}>{month.month} {month.year}</Text>
+                                <Text style={styles.monthBadgeText}>{item.month} {item.year}</Text>
                             </View>
                         </View>
 
                         <View style={styles.weeksContainer}>
-                            {month.weeks.map((week, wIdx) => (
+                            {item.weeks.map((week, wIdx) => (
                                 <TouchableOpacity key={wIdx} style={styles.weekItem}>
                                     <Text style={styles.weekText}>{week}</Text>
                                 </TouchableOpacity>
                             ))}
                         </View>
                     </View>
-                ))}
-            </ScrollView>
+                )}
+            />
 
             {/* FAB Overlay Background */}
             {vm.isFabOpen && (
