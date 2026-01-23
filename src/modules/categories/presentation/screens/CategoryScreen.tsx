@@ -7,7 +7,6 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
 import {
     ActivityIndicator,
-    FlatList,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -16,6 +15,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CategoryItem } from '../components/CategoryItem';
 import { CategoryViewModel } from '../viewmodels/CategoryViewModel';
+import {FlashList} from "@shopify/flash-list";
 
 export const CategoryScreen = observer(() => {
     const insets = useSafeAreaInsets();
@@ -47,7 +47,7 @@ export const CategoryScreen = observer(() => {
                     <ActivityIndicator color={Colors.dark.primary} size="large" />
                 </View>
             ) : (
-                <FlatList
+                <FlashList
                     data={vm.categories}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => (

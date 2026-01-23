@@ -1,22 +1,17 @@
-import { Colors } from '@/shared/constants/theme';
-import { useInjection } from '@/shared/hooks/use-injection';
-import { AppRoutes } from '@/shared/types/routes';
-import { Ionicons } from '@expo/vector-icons';
-import { Image } from 'expo-image';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useRouter } from 'expo-router';
-import { observer } from 'mobx-react-lite';
+import {Colors} from '@/shared/constants/theme';
+import {useInjection} from '@/shared/hooks/use-injection';
+import {AppRoutes} from '@/shared/types/routes';
+import {Ionicons} from '@expo/vector-icons';
+import {Image} from 'expo-image';
+import {LinearGradient} from 'expo-linear-gradient';
+import {useRouter} from 'expo-router';
+import {observer} from 'mobx-react-lite';
 import React from 'react';
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, {
-    interpolate,
-    useAnimatedStyle,
-    useSharedValue,
-    withSpring
-} from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { CalendarViewModel } from '../viewmodels/CalendarViewModel';
-
+import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Animated, {interpolate, useAnimatedStyle, useSharedValue, withSpring} from 'react-native-reanimated';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {CalendarViewModel} from '../viewmodels/CalendarViewModel';
+import {FlashList} from "@shopify/flash-list";
 
 
 // const { width } = Dimensions.get('window');
@@ -39,8 +34,8 @@ export const CalendarScreen = observer(() => {
         return {
             opacity: animation.value,
             transform: [
-                { translateY: interpolate(animation.value, [0, 1], [20, 0]) },
-                { scale: interpolate(animation.value, [0, 1], [0.8, 1]) },
+                {translateY: interpolate(animation.value, [0, 1], [20, 0])},
+                {scale: interpolate(animation.value, [0, 1], [0.8, 1])},
             ],
         };
     });
@@ -48,12 +43,12 @@ export const CalendarScreen = observer(() => {
     const fabIconStyle = useAnimatedStyle(() => {
         return {
             transform: [
-                { rotate: `${interpolate(animation.value, [0, 1], [0, 45])}deg` },
+                {rotate: `${interpolate(animation.value, [0, 1], [0, 45])}deg`},
             ],
         };
     });
 
-    const renderMonthItem = ({ item }: { item: { label: string, value: string } }) => {
+    const renderMonthItem = ({item}: { item: { label: string, value: string } }) => {
         const isSelected = item.value === vm.selectedMonth;
         return (
             <TouchableOpacity
@@ -70,7 +65,7 @@ export const CalendarScreen = observer(() => {
     return (
         <LinearGradient
             colors={[Colors.dark.gradientStart, Colors.dark.gradientEnd]}
-            style={[styles.container, { paddingTop: insets.top }]}
+            style={[styles.container, {paddingTop: insets.top}]}
         >
             {/* Header */}
             <View style={styles.header}>
@@ -80,34 +75,34 @@ export const CalendarScreen = observer(() => {
                             style={styles.iconButton}
                             onPress={() => router.push(AppRoutes.PROFILE as any)}
                         >
-                            <Ionicons name="person-outline" size={24} color={Colors.dark.text} />
+                            <Ionicons name="person-outline" size={24} color={Colors.dark.text}/>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.iconButton}>
-                            <Ionicons name="wallet-outline" size={24} color={Colors.dark.text} />
+                            <Ionicons name="wallet-outline" size={24} color={Colors.dark.text}/>
                         </TouchableOpacity>
                     </View>
 
                     <TouchableOpacity style={styles.balanceContainer}>
                         <View style={styles.balanceDropdown}>
                             <Text style={styles.balanceLabel}>December Balance</Text>
-                            <Ionicons name="chevron-down" size={16} color={Colors.dark.text} />
+                            <Ionicons name="chevron-down" size={16} color={Colors.dark.text}/>
                         </View>
                         <Text style={styles.balanceAmount}>${vm.balance.toFixed(2)}</Text>
                     </TouchableOpacity>
 
                     <View style={styles.headerRight}>
                         <TouchableOpacity style={styles.iconButton}>
-                            <Ionicons name="stats-chart" size={24} color={Colors.dark.text} />
+                            <Ionicons name="stats-chart" size={24} color={Colors.dark.text}/>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.iconButton}>
-                            <Ionicons name="ellipsis-vertical" size={24} color={Colors.dark.text} />
+                            <Ionicons name="ellipsis-vertical" size={24} color={Colors.dark.text}/>
                         </TouchableOpacity>
                     </View>
                 </View>
 
                 {/* Month Selector */}
-                <FlatList
+                <FlashList
                     horizontal
                     data={vm.months}
                     renderItem={renderMonthItem}
@@ -115,18 +110,14 @@ export const CalendarScreen = observer(() => {
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={styles.monthList}
                     initialScrollIndex={3}
-                    getItemLayout={(_, index) => ({
-                        length: 80,
-                        offset: 80 * index,
-                        index,
-                    })}
+
                 />
 
                 {/* Summary Cards */}
                 <View style={styles.summaryContainer}>
                     <View style={styles.summaryCard}>
-                        <View style={[styles.iconContainer, { backgroundColor: 'rgba(76, 175, 80, 0.1)' }]}>
-                            <Ionicons name="trending-up" size={20} color={Colors.dark.income} />
+                        <View style={[styles.iconContainer, {backgroundColor: 'rgba(76, 175, 80, 0.1)'}]}>
+                            <Ionicons name="trending-up" size={20} color={Colors.dark.income}/>
                         </View>
                         <View>
                             <Text style={styles.summaryLabel}>Income</Text>
@@ -134,8 +125,8 @@ export const CalendarScreen = observer(() => {
                         </View>
                     </View>
                     <View style={styles.summaryCard}>
-                        <View style={[styles.iconContainer, { backgroundColor: 'rgba(244, 67, 54, 0.1)' }]}>
-                            <Ionicons name="trending-down" size={20} color={Colors.dark.expense} />
+                        <View style={[styles.iconContainer, {backgroundColor: 'rgba(244, 67, 54, 0.1)'}]}>
+                            <Ionicons name="trending-down" size={20} color={Colors.dark.expense}/>
                         </View>
                         <View>
                             <Text style={styles.summaryLabel}>Expenses</Text>
@@ -203,13 +194,13 @@ export const CalendarScreen = observer(() => {
                     style={StyleSheet.absoluteFill}
                     onPress={() => vm.toggleFab()}
                 >
-                    <View style={styles.overlay} />
+                    <View style={styles.overlay}/>
                 </TouchableOpacity>
             )}
 
             {/* Expanded Buttons */}
             <View
-                style={[styles.fabContainer, { bottom: 85 + insets.bottom }]}
+                style={[styles.fabContainer, {bottom: 85 + insets.bottom}]}
                 pointerEvents="box-none"
             >
                 <Animated.View
@@ -223,8 +214,8 @@ export const CalendarScreen = observer(() => {
                             router.push(AppRoutes.PLAN_EXPENSE as any);
                         }}
                     >
-                        <View style={[styles.expandedIconContainer, { backgroundColor: 'rgba(244, 67, 54, 0.1)' }]}>
-                            <Ionicons name="trending-down" size={20} color={Colors.dark.expense} />
+                        <View style={[styles.expandedIconContainer, {backgroundColor: 'rgba(244, 67, 54, 0.1)'}]}>
+                            <Ionicons name="trending-down" size={20} color={Colors.dark.expense}/>
                         </View>
                         <Text style={styles.expandedButtonText}>Expense</Text>
                     </TouchableOpacity>
@@ -236,8 +227,8 @@ export const CalendarScreen = observer(() => {
                             router.push(AppRoutes.PLAN_INCOME as any);
                         }}
                     >
-                        <View style={[styles.expandedIconContainer, { backgroundColor: 'rgba(76, 175, 80, 0.1)' }]}>
-                            <Ionicons name="trending-up" size={20} color={Colors.dark.income} />
+                        <View style={[styles.expandedIconContainer, {backgroundColor: 'rgba(76, 175, 80, 0.1)'}]}>
+                            <Ionicons name="trending-up" size={20} color={Colors.dark.income}/>
                         </View>
                         <Text style={styles.expandedButtonText}>Income</Text>
                     </TouchableOpacity>
@@ -249,7 +240,7 @@ export const CalendarScreen = observer(() => {
                     onPress={() => vm.toggleFab()}
                 >
                     <Animated.View style={fabIconStyle}>
-                        <Ionicons name={vm.isFabOpen ? "close" : "add"} size={32} color="white" />
+                        <Ionicons name={vm.isFabOpen ? "close" : "add"} size={32} color="white"/>
                     </Animated.View>
                 </TouchableOpacity>
             </View>
@@ -445,7 +436,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         elevation: 8,
         shadowColor: Colors.dark.primary,
-        shadowOffset: { width: 0, height: 4 },
+        shadowOffset: {width: 0, height: 4},
         shadowOpacity: 0.4,
         shadowRadius: 8,
     },
@@ -466,7 +457,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         marginBottom: 12,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
