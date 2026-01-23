@@ -1,4 +1,7 @@
 import { Colors } from '@/shared/constants/theme';
+import { FormLabel } from '@/shared/components/ui/FormLabel';
+import { StyledSelector } from '@/shared/components/ui/StyledSelector';
+import { StyledTextInput } from '@/shared/components/ui/StyledTextInput';
 import { useInjection } from '@/shared/hooks/use-injection';
 import { AppRoutes } from '@/shared/types/routes';
 import { Ionicons } from '@expo/vector-icons';
@@ -46,9 +49,8 @@ export const PlanIncomeScreen = observer(() => {
 
             <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
                 {/* Category Selector */}
-                <Text style={styles.label}>Category</Text>
-                <TouchableOpacity
-                    style={styles.selector}
+                <FormLabel>Category</FormLabel>
+                <StyledSelector
                     onPress={() => router.push(AppRoutes.CATEGORY_SELECTION as any)}
                 >
                     <View style={styles.selectorLeft}>
@@ -57,36 +59,28 @@ export const PlanIncomeScreen = observer(() => {
                         </View>
                         <Text style={styles.selectorText}>{vm.category}</Text>
                     </View>
-                    <Ionicons name="chevron-down" size={20} color={Colors.dark.icon} />
-                </TouchableOpacity>
+                </StyledSelector>
 
                 {/* Amount and Currency */}
                 <View style={styles.row}>
-                    <View style={[styles.inputGroup, { flex: 1 }]}>
-                        <Text style={styles.label}>Amount</Text>
-                        <View style={styles.inputWrapper}>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="|"
-                                placeholderTextColor={Colors.dark.icon}
-                                keyboardType="numeric"
-                                value={vm.amount}
-                                onChangeText={(text) => vm.setAmount(text)}
-                            />
-                            <Ionicons name="calculator-outline" size={20} color={Colors.dark.icon} style={styles.inputIcon} />
-                        </View>
+                    <View style={{ flex: 1 }}>
+                        <FormLabel>Amount</FormLabel>
+                        <StyledTextInput
+                            placeholder="|"
+                            keyboardType="numeric"
+                            value={vm.amount}
+                            onChangeText={(text) => vm.setAmount(text)}
+                            rightIcon={<Ionicons name="calculator-outline" size={20} color={Colors.dark.icon} style={styles.inputIcon} />}
+                        />
                     </View>
 
-                    <View style={[styles.inputGroup, { width: 100, marginLeft: 16 }]}>
-                        <Text style={styles.label}>Currency</Text>
-                        <TouchableOpacity style={styles.selector}>
-                            <Text style={styles.selectorText}>{vm.currency}</Text>
-                            <Ionicons name="chevron-down" size={16} color={Colors.dark.icon} />
-                        </TouchableOpacity>
+                    <View style={[{ width: 100, marginLeft: 16 }]}>
+                        <FormLabel>Currency</FormLabel>
+                        <StyledSelector text={vm.currency} icon={<Ionicons name="chevron-down" size={16} color={Colors.dark.icon} />} />
                     </View>
 
-                    <View style={[styles.inputGroup, { marginLeft: 16, alignItems: 'center' }]}>
-                        <Text style={styles.label}>Paid</Text>
+                    <View style={[{ marginLeft: 16, alignItems: 'center' }]}>
+                        <FormLabel>Paid</FormLabel>
                         <Switch
                             value={vm.isPaid}
                             onValueChange={(val) => vm.setIsPaid(val)}
@@ -97,30 +91,27 @@ export const PlanIncomeScreen = observer(() => {
                 </View>
 
                 {/* Date */}
-                <Text style={styles.label}>Date</Text>
-                <TouchableOpacity style={styles.selector}>
-                    <Text style={styles.selectorText}>{vm.formattedDate}</Text>
-                    <View style={styles.dateSelectorRight}>
-                        <Ionicons name="calendar-outline" size={20} color={Colors.dark.icon} />
-                        <View style={styles.todayBadge}>
-                            <Text style={styles.todayText}>Today</Text>
-                            <Ionicons name="chevron-up" size={14} color="white" />
+                <FormLabel>Date</FormLabel>
+                <StyledSelector
+                    text={vm.formattedDate}
+                    icon={
+                        <View style={styles.dateSelectorRight}>
+                            <Ionicons name="calendar-outline" size={20} color={Colors.dark.icon} />
+                            <View style={styles.todayBadge}>
+                                <Text style={styles.todayText}>Today</Text>
+                                <Ionicons name="chevron-up" size={14} color="white" />
+                            </View>
                         </View>
-                    </View>
-                </TouchableOpacity>
+                    }
+                />
 
                 {/* Time */}
-                <Text style={styles.label}>Time</Text>
-                <TouchableOpacity style={styles.selector}>
-                    <Text style={styles.selectorText}>{vm.time}</Text>
-                    <Ionicons name="time-outline" size={20} color={Colors.dark.icon} />
-                </TouchableOpacity>
+                <FormLabel>Time</FormLabel>
+                <StyledSelector text={vm.time} icon={<Ionicons name="time-outline" size={20} color={Colors.dark.icon} />} />
 
                 {/* Name */}
-                <TextInput
-                    style={styles.nameInput}
+                <StyledTextInput
                     placeholder="Name"
-                    placeholderTextColor={Colors.dark.icon}
                     value={vm.name}
                     onChangeText={(text) => vm.setName(text)}
                 />
@@ -133,7 +124,7 @@ export const PlanIncomeScreen = observer(() => {
                 {vm.isMoreExpanded && (
                     <View style={styles.moreContainer}>
                         {/* Notes */}
-                        <Text style={styles.label}>Notes</Text>
+                        <FormLabel>Notes</FormLabel>
                         <TextInput
                             style={styles.notesInput}
                             multiline
@@ -144,34 +135,25 @@ export const PlanIncomeScreen = observer(() => {
                         />
 
                         {/* Repeat */}
-                        <Text style={styles.label}>Repeat</Text>
-                        <TouchableOpacity style={styles.selector}>
-                            <Text style={styles.selectorText}>{vm.repeat}</Text>
-                            <Ionicons name="chevron-down" size={20} color={Colors.dark.icon} />
-                        </TouchableOpacity>
+                        <FormLabel>Repeat</FormLabel>
+                        <StyledSelector text={vm.repeat} />
 
                         {/* Remind */}
-                        <Text style={styles.label}>Remind</Text>
-                        <TouchableOpacity style={styles.selector}>
-                            <Text style={styles.selectorText}>{vm.remind}</Text>
-                            <Ionicons name="chevron-down" size={20} color={Colors.dark.icon} />
-                        </TouchableOpacity>
+                        <FormLabel>Remind</FormLabel>
+                        <StyledSelector text={vm.remind} />
 
                         {/* Goal or debt */}
-                        <Text style={styles.label}>Goal or debt</Text>
-                        <TouchableOpacity style={styles.selector}>
-                            <Text style={styles.selectorText}>{vm.goalOrDebt || ''}</Text>
-                            <Ionicons name="chevron-down" size={20} color={Colors.dark.icon} />
-                        </TouchableOpacity>
+                        <FormLabel>Goal or debt</FormLabel>
+                        <StyledSelector text={vm.goalOrDebt || ''} />
 
                         {/* Color */}
-                        <Text style={styles.label}>Color</Text>
+                        <FormLabel>Color</FormLabel>
                         <View style={styles.colorPlaceholder}>
                             <View style={[styles.colorLine, { backgroundColor: vm.color }]} />
                         </View>
 
                         {/* Icon Color */}
-                        <Text style={styles.label}>Icon color</Text>
+                        <FormLabel>Icon color</FormLabel>
                         <View style={styles.colorPlaceholder}>
                             <View style={[styles.colorLine, { backgroundColor: vm.iconColor }]} />
                         </View>
@@ -242,22 +224,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingBottom: 120,
     },
-    label: {
-        color: '#687076',
-        fontSize: 14,
-        marginBottom: 8,
-        marginTop: 16,
-    },
-    selector: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: Colors.dark.surface,
-        borderRadius: 12,
-        padding: 12,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.05)',
-    },
     selectorLeft: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -277,25 +243,6 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-    },
-    inputGroup: {
-        marginTop: 0,
-    },
-    inputWrapper: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: Colors.dark.surface,
-        borderRadius: 12,
-        paddingHorizontal: 12,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.05)',
-        height: 48,
-    },
-    input: {
-        flex: 1,
-        color: 'white',
-        fontSize: 16,
-        height: '100%',
     },
     inputIcon: {
         marginLeft: 8,
@@ -318,17 +265,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '600',
         marginRight: 4,
-    },
-    nameInput: {
-        backgroundColor: Colors.dark.surface,
-        borderRadius: 12,
-        padding: 12,
-        color: 'white',
-        fontSize: 16,
-        marginTop: 24,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.05)',
-        height: 48,
     },
     moreButton: {
         flexDirection: 'row',

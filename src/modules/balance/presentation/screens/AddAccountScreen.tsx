@@ -1,4 +1,7 @@
 import { Colors } from '@/shared/constants/theme';
+import { FormLabel } from '@/shared/components/ui/FormLabel';
+import { StyledSelector } from '@/shared/components/ui/StyledSelector';
+import { StyledTextInput } from '@/shared/components/ui/StyledTextInput';
 import { useInjection } from '@/shared/hooks/use-injection';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -42,16 +45,12 @@ const AddAccountScreen = observer(() => {
             </View>
 
             <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-                <Text style={styles.label}>Name</Text>
-                <View style={styles.inputWrapper}>
-                    <TextInput
-                        style={styles.input}
-                        value={vm.name}
-                        onChangeText={vm.setName}
-                        placeholder="Account name"
-                        placeholderTextColor={Colors.dark.icon}
-                    />
-                </View>
+                <FormLabel>Name</FormLabel>
+                <StyledTextInput
+                    value={vm.name}
+                    onChangeText={vm.setName}
+                    placeholder="Account name"
+                />
 
                 <View style={styles.toggleRow}>
                     <TouchableOpacity
@@ -68,90 +67,61 @@ const AddAccountScreen = observer(() => {
                     </TouchableOpacity>
                 </View>
 
-                <Text style={styles.label}>Amount</Text>
+                <FormLabel>Amount</FormLabel>
                 <View style={styles.row}>
-                    <View style={[styles.inputGroup, { flex: 1 }]}>
-                        <View style={styles.inputWrapper}>
-                            <TextInput
-                                style={styles.input}
-                                value={vm.amount}
-                                onChangeText={vm.setAmount}
-                                keyboardType="numeric"
-                                placeholder="Amount"
-                                placeholderTextColor={Colors.dark.icon}
-                            />
-                        </View>
+                    <View style={{flex: 1}}>
+                        <StyledTextInput
+                            value={vm.amount}
+                            onChangeText={vm.setAmount}
+                            keyboardType="numeric"
+                            placeholder="Amount"
+                        />
                     </View>
-                    <View style={[styles.inputGroup, { width: 100, marginLeft: 16 }]}>
-                        <TouchableOpacity style={styles.selector} onPress={vm.openCurrencyPicker}>
-                            <Text style={styles.selectorText}>{vm.currency}</Text>
-                            <Ionicons name="chevron-down" size={16} color={Colors.dark.icon} />
-                        </TouchableOpacity>
+                    <View style={[{ width: 100, marginLeft: 16 }]}>
+                        <StyledSelector text={vm.currency} onPress={vm.openCurrencyPicker} icon={<Ionicons name="chevron-down" size={16} color={Colors.dark.icon} />} />
                     </View>
                 </View>
 
                 {vm.isCredit && (
                     <>
-                        <Text style={styles.label}>Credit limit</Text>
+                        <FormLabel>Credit limit</FormLabel>
                         <View style={styles.row}>
-                             <View style={[styles.inputGroup, { flex: 1 }]}>
-                                <View style={styles.inputWrapper}>
-                                    <TextInput
-                                        style={styles.input}
-                                        value={vm.creditLimit}
-                                        onChangeText={vm.setCreditLimit}
-                                        keyboardType="numeric"
-                                        placeholder="0"
-                                        placeholderTextColor={Colors.dark.icon}
-                                    />
-                                </View>
+                            <View style={{flex: 1}}>
+                                <StyledTextInput
+                                    value={vm.creditLimit}
+                                    onChangeText={vm.setCreditLimit}
+                                    keyboardType="numeric"
+                                    placeholder="0"
+                                />
                             </View>
-                            <View style={[styles.inputGroup, { width: 100, marginLeft: 16 }]}>
-                                <TouchableOpacity style={styles.selector} onPress={vm.openCurrencyPicker}>
-                                    <Text style={styles.selectorText}>{vm.currency}</Text>
-                                    <Ionicons name="chevron-down" size={16} color={Colors.dark.icon} />
-                                </TouchableOpacity>
+                            <View style={[{ width: 100, marginLeft: 16 }]}>
+                                <StyledSelector text={vm.currency} onPress={vm.openCurrencyPicker} icon={<Ionicons name="chevron-down" size={16} color={Colors.dark.icon} />} />
                             </View>
                         </View>
 
-                        <Text style={styles.label}>Payment date</Text>
-                        <TouchableOpacity style={styles.selector} onPress={vm.openPaymentDatePicker}>
-                            <Text style={styles.selectorText}>{vm.paymentDate || 'None'}</Text>
-                            <Ionicons name="calendar-outline" size={20} color={Colors.dark.icon} />
-                        </TouchableOpacity>
+                        <FormLabel>Payment date</FormLabel>
+                        <StyledSelector text={vm.paymentDate || 'None'} onPress={vm.openPaymentDatePicker} icon={<Ionicons name="calendar-outline" size={20} color={Colors.dark.icon} />} />
 
-                        <Text style={styles.label}>Remind</Text>
-                        <TouchableOpacity style={styles.selector} onPress={vm.openRemindPicker}>
-                            <Text style={styles.selectorText}>{vm.remindText}</Text>
-                            <Ionicons name="chevron-down" size={20} color={Colors.dark.icon} />
-                        </TouchableOpacity>
+                        <FormLabel>Remind</FormLabel>
+                        <StyledSelector text={vm.remindText} onPress={vm.openRemindPicker} />
                     </>
                 )}
 
-                <Text style={styles.label}>Choose an icon</Text>
-                <TouchableOpacity style={styles.selector} onPress={vm.openIconPicker}>
-                    <Text style={styles.selectorText}>{vm.iconText}</Text>
-                    <Ionicons name="chevron-down" size={20} color={Colors.dark.icon} />
-                </TouchableOpacity>
+                <FormLabel>Choose an icon</FormLabel>
+                <StyledSelector text={vm.iconText} onPress={vm.openIconPicker} />
 
-                <Text style={styles.label}>Account type</Text>
-                <TouchableOpacity style={styles.selector} onPress={vm.openAccountTypePicker}>
-                    <Text style={styles.selectorText}>{vm.accountTypeText}</Text>
-                    <Ionicons name="chevron-down" size={20} color={Colors.dark.icon} />
-                </TouchableOpacity>
+                <FormLabel>Account type</FormLabel>
+                <StyledSelector text={vm.accountTypeText} onPress={vm.openAccountTypePicker} />
 
-                <Text style={styles.label}>Category</Text>
-                <TouchableOpacity style={styles.selector} onPress={vm.openCategoryPicker}>
-                    <Text style={styles.selectorText}>{vm.categoryText}</Text>
-                    <Ionicons name="chevron-down" size={20} color={Colors.dark.icon} />
-                </TouchableOpacity>
+                <FormLabel>Category</FormLabel>
+                <StyledSelector text={vm.categoryText} onPress={vm.openCategoryPicker} />
 
-                <Text style={styles.label}>Color</Text>
+                <FormLabel>Color</FormLabel>
                 <TouchableOpacity style={styles.colorPlaceholder} onPress={vm.openColorPicker}>
                     <View style={[styles.colorLine, { backgroundColor: vm.color }]} />
                 </TouchableOpacity>
 
-                <Text style={styles.label}>Notes</Text>
+                <FormLabel>Notes</FormLabel>
                 <TextInput
                     style={styles.notesInput}
                     value={vm.notes}
@@ -205,49 +175,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingBottom: 120,
     },
-    label: {
-        color: '#687076',
-        fontSize: 14,
-        marginBottom: 8,
-        marginTop: 16,
-    },
-    selector: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: Colors.dark.surface,
-        borderRadius: 12,
-        padding: 12,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.05)',
-        height: 48,
-    },
-    selectorText: {
-        color: 'white',
-        fontSize: 16,
-    },
     row: {
         flexDirection: 'row',
         alignItems: 'flex-start',
-    },
-    inputGroup: {
-        marginTop: 0,
-    },
-    inputWrapper: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: Colors.dark.surface,
-        borderRadius: 12,
-        paddingHorizontal: 12,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.05)',
-        height: 48,
-    },
-    input: {
-        flex: 1,
-        color: 'white',
-        fontSize: 16,
-        height: '100%',
     },
     footer: {
         width: '100%',
