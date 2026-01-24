@@ -1,48 +1,41 @@
-import { Colors } from '@/shared/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Transaction } from '../../domain/models/CalendarInfo';
+import {Colors} from '@/shared/constants/theme';
+import {Ionicons} from '@expo/vector-icons';
+import React, {memo} from 'react';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {Transaction} from '../../domain/models/CalendarInfo';
 
 interface Props {
     transaction: Transaction;
+    onPress?: () => void;
 }
 
-export const CalendarTransactionItem = ({transaction}: Props) => {
+const ICON_NAME_BY_CATEGORY: Record<string, keyof typeof Ionicons.glyphMap> = {
+    food: 'fast-food',
+    transport: 'car',
+    shopping: 'cart',
+    housing: 'home',
+    salary: 'cash',
+};
+
+const ICON_COLOR_BY_CATEGORY: Record<string, string> = {
+    food: '#FF453A',
+    transport: '#0A84FF',
+    shopping: '#FF9F0A',
+    housing: '#BF5AF2',
+    salary: '#30D158',
+};
+
+const CalendarTransactionItemComponent = ({transaction, onPress}: Props) => {
+    const normalizedCategory = transaction.category.toLowerCase();
+    const iconName = ICON_NAME_BY_CATEGORY[normalizedCategory] ?? 'pricetag';
+    const iconColor = ICON_COLOR_BY_CATEGORY[normalizedCategory] ?? '#64D2FF';
     const isExpense = transaction.type === 'expense';
-    // const amountColor = isExpense ? Colors.dark.text : Colors.dark.income; 
-
-    const getIconName = (category: string) => {
-        switch (category.toLowerCase()) {
-            case 'food': return 'fast-food';
-            case 'transport': return 'car';
-            case 'shopping': return 'cart';
-            case 'housing': return 'home';
-            case 'salary': return 'cash';
-            default: return 'pricetag';
-        }
-    };
-
-    const getIconColor = (category: string) => {
-        // Just some mock colors matching the screenshot vibe
-        switch (category.toLowerCase()) {
-            case 'food': return '#FF453A'; // Red
-            case 'transport': return '#0A84FF'; // Blue
-            case 'shopping': return '#FF9F0A'; // Orange
-            case 'housing': return '#BF5AF2'; // Purple
-            case 'salary': return '#30D158'; // Green
-            default: return '#64D2FF';
-        }
-    };
-
-    const iconName = getIconName(transaction.category);
-    const iconColor = getIconColor(transaction.category);
 
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} activeOpacity={0.8} onPress={onPress}>
             <View style={styles.leftContent}>
                 <View style={styles.iconContainer}>
-                     <Ionicons name={iconName as any} size={24} color={iconColor} />
+                    <Ionicons name={iconName as any} size={24} color={iconColor}/>
                 </View>
                 <View>
                     <Text style={styles.title}>{transaction.description}</Text>
@@ -57,14 +50,34 @@ export const CalendarTransactionItem = ({transaction}: Props) => {
                     {isExpense ? '-' : '+'}${transaction.amount.toFixed(2)}
                 </Text>
                 {transaction.isPaid ? (
-                    <Ionicons name="checkmark-circle" size={20} color={Colors.dark.income} />
+                    <Ionicons name="checkmark-circle" size={20} color={Colors.dark.income}/>
                 ) : (
-                    <View style={styles.unpaidCircle} />
+                    <View style={styles.unpaidCircle}/>
                 )}
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
+
+export const CalendarTransactionItem = memo(CalendarTransactionItemComponent, (prev, next) => {
+    if (prev.transaction === next.transaction && prev.onPress === next.onPress) {
+        return true;
+    }
+
+    if (prev.transaction.id !== next.transaction.id) {
+        return false;
+    }
+
+    return (
+        prev.transaction.amount === next.transaction.amount &&
+        prev.transaction.type === next.transaction.type &&
+        prev.transaction.description === next.transaction.description &&
+        prev.transaction.paymentMethod === next.transaction.paymentMethod &&
+        prev.transaction.isPaid === next.transaction.isPaid &&
+        prev.transaction.category === next.transaction.category &&
+        prev.onPress === next.onPress
+    );
+});
 
 const styles = StyleSheet.create({
     container: {

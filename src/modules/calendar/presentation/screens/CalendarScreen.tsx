@@ -27,7 +27,7 @@ export const CalendarScreen = observer(() => {
     const monthsRef = useRef<FlashListRef<MonthOption>>(null)
     const calendarListRef = useRef<FlashListRef<MonthData>>(null)
 
-
+    console.log("test")
     useEffect(() => {
         animation.value = withSpring(vm.isFabOpen ? 1 : 0, {
             damping: 12,
@@ -173,7 +173,14 @@ export const CalendarScreen = observer(() => {
                                                 style={styles.dayBalanceText}>${Math.abs(day.dayBalance).toFixed(2)}</Text>
                                         </View>
                                         {day.transactions.map((transaction) => (
-                                            <CalendarTransactionItem key={transaction.id} transaction={transaction}/>
+                                            <CalendarTransactionItem
+                                                key={transaction.id}
+                                                transaction={transaction}
+                                                onPress={() => router.push({
+                                                    pathname: '/transaction-detail',
+                                                    params: {id: transaction.id}
+                                                })}
+                                            />
                                         ))}
                                     </View>
                                 )

@@ -6,6 +6,7 @@ import { expensesModule } from "@/modules/expenses/di/expenses.module";
 import { goalsModule } from "@/modules/goals/di/goals.module";
 import { incomeModule } from "@/modules/income/di/income.module";
 import { profileModule } from "@/modules/profile/di/profile.module";
+import { transactionsModule } from "@/modules/transactions/di/transactions.module";
 import { bindingScopeValues, Container } from 'inversify';
 
 export const container = new Container({
@@ -13,4 +14,4 @@ export const container = new Container({
     autobind: true
 });
 
-container.loadSync(authModule, balanceModule, calendarModule, categoriesModule, expensesModule, goalsModule, incomeModule, profileModule);
+container.loadSync(authModule, balanceModule, calendarModule, categoriesModule, expensesModule, goalsModule, incomeModule, profileModule, transactionsModule);
