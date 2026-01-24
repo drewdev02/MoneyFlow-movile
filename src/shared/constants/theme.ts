@@ -2,6 +2,7 @@
  * Theme/colors/fonts/radii/spacing for MoneyFlow
  * Use ONLY these tokens for backgrounds, text, borders, and padding
  */
+import { LinearGradientProps } from 'expo-linear-gradient';
 import { Platform } from 'react-native';
 
 const tintColorLight = '#0a7ea4';
@@ -38,6 +39,12 @@ export const Colors = {
     gradientStart: '#1A1C2E',
     gradientEnd: '#0F1014',
   },
+};
+
+// Global gradients and custom colors used in multiple places
+export const GlobalGradients = {
+  authBackground: ['#0F1014', '#1F1235', '#0F1014'] as LinearGradientProps['colors'],
+  logo: ['#8E2DE2', '#4A00E0'] as LinearGradientProps['colors'],
 };
 
 export const Radii = {

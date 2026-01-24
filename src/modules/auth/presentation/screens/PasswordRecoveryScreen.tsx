@@ -1,3 +1,5 @@
+import BudgeLogo from '@/shared/components/BudgeLogo';
+import { GlobalGradients } from '@/shared/constants/theme';
 import { useInjection } from '@/shared/hooks/use-injection';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -15,7 +17,7 @@ const PasswordRecoveryScreen: React.FC = observer(() => {
 
     return (
         <LinearGradient
-            colors={['#0F1014', '#1F1235', '#0F1014']}
+            colors={GlobalGradients.authBackground}
             style={styles.container}
         >
             <KeyboardAvoidingView
@@ -39,15 +41,11 @@ const PasswordRecoveryScreen: React.FC = observer(() => {
                     </TouchableOpacity>
 
                     {/* Logo Section */}
-                    <View style={styles.logoContainer}>
-                        <LinearGradient
-                            colors={['#8E2DE2', '#4A00E0']}
-                            style={styles.logoIcon}
-                        >
-                            <View style={styles.logoInner} />
-                        </LinearGradient>
-                        <Text style={styles.logoText}>budge</Text>
-                    </View>
+                    <BudgeLogo
+                        style={styles.logoContainer}
+                        iconStyle={styles.logoIcon}
+                        textStyle={styles.logoText}
+                    />
 
                     {/* Title Section */}
                     <View style={styles.titleSection}>

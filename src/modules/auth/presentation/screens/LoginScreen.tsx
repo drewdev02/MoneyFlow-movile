@@ -1,3 +1,5 @@
+import BudgeLogo from '@/shared/components/BudgeLogo';
+import { GlobalGradients } from '@/shared/constants/theme';
 import { useInjection } from '@/shared/hooks/use-injection';
 import { AppRoutes } from '@/shared/types/routes';
 import { Ionicons } from '@expo/vector-icons';
@@ -41,7 +43,7 @@ export const LoginScreen = observer(() => {
 
     return (
         <LinearGradient
-            colors={['#0F1014', '#1F1235', '#0F1014']}
+            colors={GlobalGradients.authBackground}
             style={styles.container}
         >
             <KeyboardAvoidingView
@@ -56,15 +58,11 @@ export const LoginScreen = observer(() => {
                     showsVerticalScrollIndicator={false}
                 >
                     {/* Logo Section */}
-                    <View style={styles.logoContainer}>
-                        <LinearGradient
-                            colors={['#8E2DE2', '#4A00E0']}
-                            style={styles.logoIcon}
-                        >
-                            <View style={styles.logoInner} />
-                        </LinearGradient>
-                        <Text style={styles.logoText}>budge</Text>
-                    </View>
+                    <BudgeLogo
+                        style={styles.logoContainer}
+                        iconStyle={styles.logoIcon}
+                        textStyle={styles.logoText}
+                    />
 
                     {/* Title Section */}
                     <View style={styles.titleSection}>
