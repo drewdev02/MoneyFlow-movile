@@ -4,6 +4,8 @@ import { AuthRepositoryImpl } from "../data/repositories/AuthRepositoryImpl";
 import { AuthRepository } from "../domain/repositories/AuthRepository";
 import { LoginUseCase } from "../domain/usecases/LoginUseCase";
 import { LoginViewModel } from "../presentation/viewmodels/LoginViewModel";
+import { SignUpUseCase } from "../domain/usecases/SignUpUseCase";
+import { SignUpViewModel } from "../presentation/viewmodels/SignUpViewModel";
 
 export const authModule = new ContainerModule(options => {
     options.bind<AuthApi>(AuthApi).toSelf();
@@ -15,5 +17,9 @@ export const authModule = new ContainerModule(options => {
     );
     options.bind<LoginViewModel>(LoginViewModel).toDynamicValue(context =>
         new LoginViewModel(context.get(LoginUseCase))
+    );
+    options.bind<SignUpUseCase>(SignUpUseCase).toSelf();
+    options.bind<SignUpViewModel>(SignUpViewModel).toDynamicValue(context =>
+        new SignUpViewModel(context.get(SignUpUseCase))
     );
 });

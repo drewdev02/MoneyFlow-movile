@@ -28,10 +28,10 @@ export default Sentry.wrap(function RootLayout() {
   const route = usePathname();
   logger.debug(`Current route: ${route}`);
   return (
-    <Stack screenOptions={{ headerShown: false, }}>
+    <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
+      <Stack.Screen name="(auth)/index" />
       <Stack.Screen name="(home)" />
-      <Stack.Screen name="(profile)/index" />
-      <Stack.Screen name="(auth)/login" />
+      <Stack.Screen name="(profile)" />
     </Stack>
   )
 });

@@ -66,7 +66,12 @@ src/
 ├── shared/         # Shared UI, hooks, utils
 ```
 
+
 ## Screenshots
+
+| Login | Sign Up |
+|---|---|
+| ![Login](screenshots/login.png) | ![Sign Up](screenshots/signUp.png) |
 
 | Wallets | Goals | Calendar |
 |---|---|---|
