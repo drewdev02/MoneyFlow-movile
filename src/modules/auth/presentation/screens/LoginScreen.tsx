@@ -127,7 +127,7 @@ export const LoginScreen = observer(() => {
                             <TouchableOpacity onPress={() => router.push('/(auth)/sign-up')}>
                                 <Text style={styles.linkText}>Sign Up</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => router.push('/(auth)/password-recovery')}>
                                 <Text style={styles.linkText}>Forgot password?</Text>
                             </TouchableOpacity>
                         </View>

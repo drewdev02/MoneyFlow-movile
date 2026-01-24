@@ -1,13 +1,13 @@
 
 
+import { container } from '@/core/di/container';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
 import { observer } from 'mobx-react-lite';
 import React, { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import { container } from '@/core/di/container';
 import SignUpForm from '../components/SignUpForm';
 import { SignUpViewModel } from '../viewmodels/SignUpViewModel';
 

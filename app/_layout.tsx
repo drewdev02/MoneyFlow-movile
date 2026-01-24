@@ -1,6 +1,6 @@
-import { Stack, useNavigation, usePathname } from "expo-router";
-import * as Sentry from '@sentry/react-native';
 import { useLogger } from "@/shared/hooks/use-logger";
+import * as Sentry from '@sentry/react-native';
+import { Stack, usePathname } from "expo-router";
 
 Sentry.init({
   dsn: 'https://a18f6993331a3efc34afd3757a09da95@o4507473669652480.ingest.us.sentry.io/4510760271478784',
@@ -29,9 +29,9 @@ export default Sentry.wrap(function RootLayout() {
   logger.debug(`Current route: ${route}`);
   return (
     <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
-      <Stack.Screen name="(auth)/index" />
+      <Stack.Screen name="(auth)" />
       <Stack.Screen name="(home)" />
-      <Stack.Screen name="(profile)" />
+      <Stack.Screen name="(profile)/profile" />
     </Stack>
   )
 });

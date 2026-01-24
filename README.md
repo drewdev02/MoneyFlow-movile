@@ -67,15 +67,16 @@ src/
 ```
 
 
+
 ## Screenshots
 
-| Login | Sign Up |
-|---|---|
-| ![Login](screenshots/login.png) | ![Sign Up](screenshots/signUp.png) |
-
-| Wallets | Goals | Calendar |
+| Login | Sign Up | Recover Password |
 |---|---|---|
-| ![Wallets](screenshots/wallets.png) | ![Goals](screenshots/goals.png) | ![Calendar](screenshots/calendar.png) |
+| ![Login](screenshots/login.png) | ![Sign Up](screenshots/signUp.png) | ![Recover Password](screenshots/recover-password.png) |
+
+| Goals | Calendar | Wallets |
+|---|---|---|
+| ![Goals](screenshots/goals.png) | ![Calendar](screenshots/calendar.png) | ![Wallets](screenshots/wallets.png) |
 
 | Add Transaction | Add Expense | Add Income |
 |---|---|---|
