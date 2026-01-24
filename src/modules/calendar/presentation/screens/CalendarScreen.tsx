@@ -1,18 +1,20 @@
-import { Colors } from '@/shared/constants/theme';
-import { useInjection } from '@/shared/hooks/use-injection';
-import { AppRoutes } from '@/shared/types/routes';
-import { Ionicons } from '@expo/vector-icons';
-import { FlashList } from "@shopify/flash-list";
-import { Image } from 'expo-image';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useRouter } from 'expo-router';
-import { observer } from 'mobx-react-lite';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { interpolate, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { CalendarViewModel } from '../viewmodels/CalendarViewModel';
-import { CalendarTransactionItem } from '../components/CalendarTransactionItem';
+import {Colors} from '@/shared/constants/theme';
+import {useInjection} from '@/shared/hooks/use-injection';
+import {AppRoutes} from '@/shared/types/routes';
+import {Ionicons} from '@expo/vector-icons';
+import {FlashList} from "@shopify/flash-list";
+import {Image} from 'expo-image';
+import {LinearGradient} from 'expo-linear-gradient';
+import {useRouter} from 'expo-router';
+import {observer} from 'mobx-react-lite';
+import React, {useEffect, useRef} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Animated, {interpolate, useAnimatedStyle, useSharedValue, withSpring} from 'react-native-reanimated';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {CalendarViewModel} from '../viewmodels/CalendarViewModel';
+import {CalendarTransactionItem} from '../components/CalendarTransactionItem';
+import {FlashListRef} from "@shopify/flash-list/dist/FlashListRef";
+import {MonthData, MonthOption} from "@/modules/calendar/domain/models/CalendarInfo";
 
 
 // const { width } = Dimensions.get('window');
@@ -22,8 +24,11 @@ export const CalendarScreen = observer(() => {
     const router = useRouter();
     const vm = useInjection(CalendarViewModel);
     const animation = useSharedValue(0);
+    const monthsRef = useRef<FlashListRef<MonthOption>>(null)
+    const calendarListRef = useRef<FlashListRef<MonthData>>(null)
 
-    React.useEffect(() => {
+
+    useEffect(() => {
         animation.value = withSpring(vm.isFabOpen ? 1 : 0, {
             damping: 12,
             stiffness: 200, // Increased stiffness for more speed
@@ -90,6 +95,7 @@ export const CalendarScreen = observer(() => {
 
                 {/* Month Selector */}
                 <FlashList
+                    ref={monthsRef}
                     horizontal
                     data={vm.months}
                     renderItem={({item}) => {
@@ -136,6 +142,7 @@ export const CalendarScreen = observer(() => {
 
             {/* Content */}
             <FlashList
+                ref={calendarListRef}
                 data={vm.calendarList}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.content}
@@ -153,19 +160,24 @@ export const CalendarScreen = observer(() => {
                                 <Text style={styles.monthBadgeText}>{item.month} {item.year}</Text>
                             </View>
                         </View>
-
                         <View style={styles.daysContainer}>
-                            {item.days.map((day, dIdx) => (
-                                <View key={dIdx} style={styles.daySection}>
-                                    <View style={styles.dayHeader}>
-                                        <Text style={styles.dayHeaderText}>{day.label}</Text>
-                                        <Text style={styles.dayBalanceText}>-${Math.abs(day.dayBalance).toFixed(2)}</Text>
+                            {item.days.map((day, dIdx) => {
+                                if (day.transactions?.length === 0) {
+                                    return null;
+                                }
+                                return (
+                                    <View key={dIdx} style={styles.daySection}>
+                                        <View style={styles.dayHeader}>
+                                            <Text style={styles.dayHeaderText}>{day.label}</Text>
+                                            <Text
+                                                style={styles.dayBalanceText}>${Math.abs(day.dayBalance).toFixed(2)}</Text>
+                                        </View>
+                                        {day.transactions.map((transaction) => (
+                                            <CalendarTransactionItem key={transaction.id} transaction={transaction}/>
+                                        ))}
                                     </View>
-                                    {day.transactions.map((transaction) => (
-                                        <CalendarTransactionItem key={transaction.id} transaction={transaction} />
-                                    ))}
-                                </View>
-                            ))}
+                                )
+                            })}
                         </View>
                     </View>
                 )}
