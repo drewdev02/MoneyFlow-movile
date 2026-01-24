@@ -28,7 +28,7 @@ export const LoginScreen = observer(() => {
     const handleLogin = async () => {
         const success = await vm.login();
         if (success) {
-            router.replace(AppRoutes.HOME as any);
+            router.replace("/(home)/(tabs)");
         }
     };
 

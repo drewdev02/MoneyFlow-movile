@@ -1,5 +1,4 @@
 import { ContainerModule } from "inversify";
-import { AuthApi } from "../data/api/AuthApi";
 import { AuthRepositoryImpl } from "../data/repositories/AuthRepositoryImpl";
 import { AuthRepository } from "../domain/repositories/AuthRepository";
 import { LoginUseCase } from "../domain/usecases/LoginUseCase";
@@ -8,11 +7,11 @@ import { SignUpUseCase } from "../domain/usecases/SignUpUseCase";
 import { LoginViewModel } from "../presentation/viewmodels/LoginViewModel";
 import { PasswordRecoveryViewModel } from "../presentation/viewmodels/PasswordRecoveryViewModel";
 import { SignUpViewModel } from "../presentation/viewmodels/SignUpViewModel";
+import { HttpClient } from "@/core/http";
 
 export const authModule = new ContainerModule(options => {
-    options.bind<AuthApi>(AuthApi).toSelf();
     options.bind<AuthRepository>(AuthRepository).toDynamicValue(context =>
-        new AuthRepositoryImpl(context.get(AuthApi))
+        new AuthRepositoryImpl(context.get(HttpClient))
     );
     options.bind<LoginUseCase>(LoginUseCase).toDynamicValue(context =>
         new LoginUseCase(context.get(AuthRepository))

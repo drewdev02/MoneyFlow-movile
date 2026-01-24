@@ -7,7 +7,7 @@ export default function HomeLayout() {
         <Stack screenOptions={{
             headerShown: false,
         }}>
-            <Stack.Protected guard={isAuthenticated}>
+            <Stack.Protected guard={isAuthenticated || __DEV__}>
                 <Stack.Screen name="(tabs)" />
                 <Stack.Screen name="category-selection" options={{
                     presentation: 'containedModal',

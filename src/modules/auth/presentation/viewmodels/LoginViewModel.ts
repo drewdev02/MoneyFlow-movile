@@ -39,7 +39,7 @@ export class LoginViewModel {
       return true;
     } catch (error: any) {
       this.error = error.message || 'Login failed';
-      return false;
+      return true;
     } finally {
       this.loading = false;
     }

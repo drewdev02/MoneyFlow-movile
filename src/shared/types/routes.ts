@@ -1,5 +1,5 @@
 export enum AppRoutes {
-  HOME = "(home)/index",
+  HOME = "(home)/(tabs)/index",
   CATEGORY_SELECTION = "(home)/category-selection",
   PLAN_EXPENSE = "(home)/plan-expense",
   PLAN_INCOME = "(home)/plan-income",
