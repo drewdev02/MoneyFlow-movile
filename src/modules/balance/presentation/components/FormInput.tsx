@@ -1,5 +1,7 @@
+import { Colors, Radii, Spacing, FontSizes, Fonts } from '@/shared/constants/theme';
 import React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { useColorScheme } from '@/shared/hooks/use-color-scheme';
 
 interface Props {
   label: string;
@@ -19,41 +21,46 @@ export const FormInput: React.FC<Props> = ({
   keyboardType = 'default',
   right,
   multiline = false,
-}) => (
-  <View style={{ marginBottom: 8 }}>
-    <Text style={styles.label}>{label}</Text>
-    <View style={styles.row}>
-      <TextInput
-        style={[styles.input, multiline && { height: 60 }]}
-        value={value}
-        onChangeText={onChangeText}
-        placeholder={placeholder}
-        placeholderTextColor="#888"
-        keyboardType={keyboardType}
-        multiline={multiline}
-      />
-      {right}
+}) => {
+  const theme = useColorScheme() ?? 'light';
+  return (
+    <View style={{ marginBottom: Spacing.sm }}>
+      <Text style={{
+        color: Colors[theme].icon,
+        fontSize: FontSizes.sm,
+        fontFamily: Fonts.sans,
+        marginBottom: Spacing.xs,
+      }}>{label}</Text>
+      <View style={styles.row}>
+        <TextInput
+          style={[styles.input, multiline && { height: 60 }, {
+            backgroundColor: Colors[theme].surface,
+            borderRadius: Radii.md,
+            color: Colors[theme].text,
+            paddingHorizontal: Spacing.lg,
+            paddingVertical: Spacing.md,
+            fontSize: FontSizes.md,
+            fontFamily: Fonts.sans,
+          }]}
+          value={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
+          placeholderTextColor={Colors[theme].icon}
+          keyboardType={keyboardType}
+          multiline={multiline}
+        />
+        {right}
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
-  label: {
-    color: '#aaa',
-    fontSize: 14,
-    marginBottom: 4,
-  },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   input: {
-    backgroundColor: '#23243A',
-    borderRadius: 8,
-    color: '#fff',
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 16,
     flex: 1,
   },
 });
