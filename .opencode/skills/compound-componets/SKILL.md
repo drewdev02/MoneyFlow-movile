@@ -1,3 +1,11 @@
+---
+name: compound-components
+title: Crear Componentes Usando Compound Components Pattern (MobX + DI + useInjection)
+description: Permitir la creación de componentes compuestos en React/MobX donde la lógica y el estado central viven en un ViewModel inyectado por DI mediante el hook useInjection.
+---
+
+
+
 ## Skill: compound-components-pattern
 
 **Base directory**: /Users/Andrew/WorkSpace/adrewdev/MoneyFlow/.opencode/skills/compound-components-pattern
