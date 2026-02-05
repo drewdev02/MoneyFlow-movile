@@ -20,20 +20,31 @@ const levelOrder = ['debug', 'info', 'warn', 'error'];
 
 export class LoggerFactory {
     static createLogger(name: string): Logger {
+        const ignoredLoggers = (process.env.EXPO_PUBLIC_LOG_FILTERS || '').split(',').map(s => s.trim());
+        
+        if (ignoredLoggers.includes(name)) {
+             return {
+                error: () => {},
+                info: () => {},
+                warn: () => {},
+                debug: () => {},
+            };
+        }
+
         const logLevel = getLogLevel();
         const minLevelIdx = logLevel ? levelOrder.indexOf(logLevel) : 0;
         return {
             error: (message?: any, ...optionalParams: any[]) => {
-                if (minLevelIdx <= 3) console.error(`[${name}] ${new Date().toISOString()} =>`, message, ...optionalParams);
+                if (minLevelIdx <= 3) console.error(`[${name}] ${new Date().toUTCString()} =>`, message, ...optionalParams);
             },
             warn: (message?: any, ...optionalParams: any[]) => {
-                if (minLevelIdx <= 2) console.warn(`[${name}] ${new Date().toISOString()} =>`, message, ...optionalParams);
+                if (minLevelIdx <= 2) console.warn(`[${name}] ${new Date().toUTCString()} =>`, message, ...optionalParams);
             },
             info: (message?: any, ...optionalParams: any[]) => {
-                if (minLevelIdx <= 1) console.info(`[${name}] ${new Date().toISOString()} =>`, message, ...optionalParams);
+                if (minLevelIdx <= 1) console.info(`[${name}] ${new Date().toUTCString()} =>`, message, ...optionalParams);
             },
             debug: (message?: any, ...optionalParams: any[]) => {
-                if (minLevelIdx <= 0) console.debug(`[${name}] ${new Date().toISOString()} =>`, message, ...optionalParams);
+                if (minLevelIdx <= 0) console.debug(`[${name}] ${new Date().toUTCString()} =>`, message, ...optionalParams);
             },
         }
     }
