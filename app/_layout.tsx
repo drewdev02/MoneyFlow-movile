@@ -1,4 +1,5 @@
 import { useLogger } from "@/shared/hooks/use-logger";
+import { Providers } from "@/shared/providers/Providers";
 import * as Sentry from '@sentry/react-native';
 import { Stack, usePathname } from "expo-router";
 
@@ -28,10 +29,12 @@ export default Sentry.wrap(function RootLayout() {
   const route = usePathname();
   logger.debug(`Current route: ${route}`);
   return (
-    <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
-      <Stack.Screen name="(auth)" />
-      <Stack.Screen name="(home)" />
-      <Stack.Screen name="(profile)/profile" />
-    </Stack>
+    <Providers>
+      <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(home)" />
+        <Stack.Screen name="(profile)/profile" />
+      </Stack>
+    </Providers>
   )
 });

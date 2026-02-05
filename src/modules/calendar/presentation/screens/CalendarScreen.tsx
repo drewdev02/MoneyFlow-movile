@@ -27,7 +27,6 @@ export const CalendarScreen = observer(() => {
     const monthsRef = useRef<FlashListRef<MonthOption>>(null)
     const calendarListRef = useRef<FlashListRef<MonthData>>(null)
 
-    console.log("test")
     useEffect(() => {
         animation.value = withSpring(vm.isFabOpen ? 1 : 0, {
             damping: 12,

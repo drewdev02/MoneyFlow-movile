@@ -48,7 +48,8 @@
           "project": "moneyflow",
           "organization": "adrewdev"
         }
-      ]
+      ],
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true,

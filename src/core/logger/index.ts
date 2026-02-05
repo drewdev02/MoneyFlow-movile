@@ -24,16 +24,16 @@ export class LoggerFactory {
         const minLevelIdx = logLevel ? levelOrder.indexOf(logLevel) : 0;
         return {
             error: (message?: any, ...optionalParams: any[]) => {
-                if (minLevelIdx <= 3) console.error(`[${name} ${new Date().toISOString()}] =>`, message, ...optionalParams);
+                if (minLevelIdx <= 3) console.error(`[${name}] ${new Date().toISOString()} =>`, message, ...optionalParams);
             },
             warn: (message?: any, ...optionalParams: any[]) => {
-                if (minLevelIdx <= 2) console.warn(`[${name} ${new Date().toISOString()}] =>`, message, ...optionalParams);
+                if (minLevelIdx <= 2) console.warn(`[${name}] ${new Date().toISOString()} =>`, message, ...optionalParams);
             },
             info: (message?: any, ...optionalParams: any[]) => {
-                if (minLevelIdx <= 1) console.info(`[${name} ${new Date().toISOString()}] =>`, message, ...optionalParams);
+                if (minLevelIdx <= 1) console.info(`[${name}] ${new Date().toISOString()} =>`, message, ...optionalParams);
             },
             debug: (message?: any, ...optionalParams: any[]) => {
-                if (minLevelIdx <= 0) console.debug(`[${name} ${new Date().toISOString()}] =>`, message, ...optionalParams);
+                if (minLevelIdx <= 0) console.debug(`[${name}] ${new Date().toISOString()} =>`, message, ...optionalParams);
             },
         }
     }
