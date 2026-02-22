@@ -1,12 +1,17 @@
 import axios, { Axios } from 'axios';
 import { LoggerFactory } from '../logger';
+import { ConfigService, EnvConfigService } from '../config/ConfigService';
+import { container } from '../di/container';
 
 
 
 export class HttpClient extends Axios { }
 
+
+
+const config = container?.get(ConfigService) ?? new EnvConfigService();
 export const axiosClient = axios.create({
-    baseURL: process.env.EXPO_PUBLIC_API_URL,
+    baseURL: config.apiUrl,
 })
 
 const logger = LoggerFactory.createLogger("HttpClient");

@@ -18,7 +18,7 @@ export const container = new Container({
     autobind: true
 });
 
-container.bind<ConfigService>(ConfigService).toResolvedValue(() => new EnvConfigService());
+container.bind<ConfigService>(ConfigService).toDynamicValue(() => new EnvConfigService()).inSingletonScope();
 container.bind<TokenService>(TokenService).toSelf().inSingletonScope();
 container.bind<HttpClient>(HttpClient).toSelf().inSingletonScope();
 container.bind<Database>(Database).toConstantValue(drizzleDb)
