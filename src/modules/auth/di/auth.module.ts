@@ -1,6 +1,4 @@
-import { Database } from "@/core/db";
 import { ContainerModule } from "inversify";
-import { LocalAuthRepositoryImpl } from "../data/repositories/LocalAuthRepositoryImpl";
 import { AuthRepository } from "../domain/repositories/AuthRepository";
 import { GetCurrentUserUseCase } from "../domain/usecases/GetCurrentUserUseCase";
 import { LoginUseCase } from "../domain/usecases/LoginUseCase";
@@ -12,9 +10,16 @@ import { LoginViewModel } from "../presentation/viewmodels/LoginViewModel";
 import { PasswordRecoveryViewModel } from "../presentation/viewmodels/PasswordRecoveryViewModel";
 import { SignUpViewModel } from "../presentation/viewmodels/SignUpViewModel";
 
+import { AuthRepositoryImpl } from "../data/repositories/AuthRepositoryImpl";
+import { HttpClient } from "@/core/http";
+import { TokenService } from "@/core/auth/TokenService";
+
 export const authModule = new ContainerModule(options => {
     options.bind<AuthRepository>(AuthRepository).toDynamicValue(context =>
-        new LocalAuthRepositoryImpl(context.get(Database))
+        new AuthRepositoryImpl(
+            context.get(HttpClient),
+            context.get(TokenService)
+        )
     );
     options.bind<LoginUseCase>(LoginUseCase).toDynamicValue(context =>
         new LoginUseCase(context.get(AuthRepository))

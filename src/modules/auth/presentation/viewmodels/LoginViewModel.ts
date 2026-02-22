@@ -1,8 +1,10 @@
+import { LoggerFactory } from '@/core/logger';
 import { makeAutoObservable } from 'mobx';
 import { LoginUseCase } from '../../domain/usecases/LoginUseCase';
 import { LoginWithGoogleUseCase } from '../../domain/usecases/LoginWithGoogleUseCase';
 
 export class LoginViewModel {
+  private readonly logger = LoggerFactory.createLogger(LoginViewModel.name);
   email = '';
   password = '';
   loading = false;
@@ -32,7 +34,7 @@ export class LoginViewModel {
 
   async login() {
     if (!this.email || !this.password) {
-      this.error = 'Please fill in all fields';
+      this.error = 'Por favor, completa todos los campos';
       return false;
     }
 
@@ -42,8 +44,9 @@ export class LoginViewModel {
       await this.loginUseCase.execute(this.email, this.password);
       return true;
     } catch (error: any) {
-      this.error = error.message || 'Login failed';
-      return true;
+      this.logger.error('Login error', error);
+      this.error = error.message || 'Error al iniciar sesión';
+      return false;
     } finally {
       this.loading = false;
     }

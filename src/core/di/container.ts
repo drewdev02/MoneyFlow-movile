@@ -8,13 +8,18 @@ import { incomeModule } from "@/modules/income/di/income.module";
 import { profileModule } from "@/modules/profile/di/profile.module";
 import { transactionsModule } from "@/modules/transactions/di/transactions.module";
 import { bindingScopeValues, Container } from 'inversify';
-import { axiosClient, HttpClient } from "../http";
+import { HttpClient } from "../http";
 import { Database, drizzleDb } from "../db";
+import { TokenService } from "../auth/TokenService";
+import { ConfigService, EnvConfigService } from "../config/ConfigService";
 
 export const container = new Container({
     defaultScope: bindingScopeValues.Singleton,
     autobind: true
 });
-container.bind<HttpClient>(HttpClient).toConstantValue(axiosClient)
+
+container.bind<ConfigService>(ConfigService).toResolvedValue(() => new EnvConfigService());
+container.bind<TokenService>(TokenService).toSelf().inSingletonScope();
+container.bind<HttpClient>(HttpClient).toSelf().inSingletonScope();
 container.bind<Database>(Database).toConstantValue(drizzleDb)
 container.loadSync(authModule, balanceModule, calendarModule, categoriesModule, expensesModule, goalsModule, incomeModule, profileModule, transactionsModule);

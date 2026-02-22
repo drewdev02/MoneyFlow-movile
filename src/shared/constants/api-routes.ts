@@ -1,5 +1,5 @@
 export const ApiRoutes = {
-    Login: "/auth/login",
-    SignUp: "/auth/sign-up",
-    PasswordRecovery: "/auth/password-recovery",
+    Login: "/api/auth/login",
+    SignUp: "/api/auth/register",
+    PasswordRecovery: "/api/auth/password-recovery",
 } as const

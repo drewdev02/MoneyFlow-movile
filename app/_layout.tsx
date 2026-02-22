@@ -3,9 +3,17 @@ import { Providers } from "@/shared/providers/Providers";
 import * as Sentry from '@sentry/react-native';
 import { Stack, usePathname } from "expo-router";
 
+import { container } from "@/core/di/container";
+import { ConfigService } from "@/core/config/ConfigService";
+import { LoggerFactory } from "@/core/logger";
+
+// Initialize core services
+const config = container.get(ConfigService);
+LoggerFactory.init(config);
+
 Sentry.init({
-  dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
-  enabled: !__DEV__,
+  dsn: config.sentryDsn,
+  enabled: config.env === 'production',
   sendDefaultPii: true,
   enableLogs: true,
   replaysSessionSampleRate: 0.1,
@@ -24,7 +32,7 @@ Sentry.init({
   ],
 });
 
-export default Sentry.wrap(function RootLayout() {
+export default Sentry.wrap(() => {
   const logger = useLogger("root-layout");
   const route = usePathname();
   logger.debug(`Current route: ${route}`);

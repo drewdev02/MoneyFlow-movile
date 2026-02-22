@@ -1,3 +1,4 @@
+import { ConfigService } from "../config/ConfigService";
 
 export abstract class Logger {
     abstract error(message?: any, ...optionalParams: any[]): void;
@@ -6,33 +7,36 @@ export abstract class Logger {
     abstract debug(message?: any, ...optionalParams: any[]): void;
 }
 
-
-type LogLevel = 'debug' | 'info' | 'warn' | 'error' | undefined;
-
-function getLogLevel(): LogLevel {
-    if (process.env.EXPO_PUBLIC_LOG_LEVEL) {
-        return process.env.EXPO_PUBLIC_LOG_LEVEL as LogLevel;
-    }
-    return 'info';
-}
-
 const levelOrder = ['debug', 'info', 'warn', 'error'];
 
 export class LoggerFactory {
+    private static config: ConfigService;
+
+    static init(config: ConfigService) {
+        this.config = config;
+    }
+
     static createLogger(name: string): Logger {
-        const ignoredLoggers = (process.env.EXPO_PUBLIC_LOG_FILTERS || '').split(',').map(s => s.trim());
-        
-        if (ignoredLoggers.includes(name)) {
-             return {
-                error: () => {},
-                info: () => {},
-                warn: () => {},
-                debug: () => {},
+        const config = this.config;
+        if (!config) {
+            // Fallback for early logging if not initialized or if config is not available
+            return this.createConsoleLogger(name, 'info');
+        }
+
+        if (config.logFilters.includes(name)) {
+            return {
+                error: () => { },
+                info: () => { },
+                warn: () => { },
+                debug: () => { },
             };
         }
 
-        const logLevel = getLogLevel();
-        const minLevelIdx = logLevel ? levelOrder.indexOf(logLevel) : 0;
+        return this.createConsoleLogger(name, config.logLevel);
+    }
+
+    private static createConsoleLogger(name: string, logLevel: string): Logger {
+        const minLevelIdx = levelOrder.indexOf(logLevel);
         return {
             error: (message?: any, ...optionalParams: any[]) => {
                 if (minLevelIdx <= 3) console.error(`[${name}] ${new Date().toUTCString()} =>`, message, ...optionalParams);
