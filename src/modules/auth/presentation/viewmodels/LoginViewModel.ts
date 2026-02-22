@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { LoginUseCase } from '../../domain/usecases/LoginUseCase';
+import { LoginWithGoogleUseCase } from '../../domain/usecases/LoginWithGoogleUseCase';
 
 export class LoginViewModel {
   email = '';
@@ -8,7 +9,10 @@ export class LoginViewModel {
   error = '';
   isPasswordVisible = false;
 
-  constructor(private loginUseCase: LoginUseCase) {
+  constructor(
+    private loginUseCase: LoginUseCase,
+    private loginWithGoogleUseCase: LoginWithGoogleUseCase
+  ) {
     makeAutoObservable(this);
   }
 
@@ -49,9 +53,7 @@ export class LoginViewModel {
     this.loading = true;
     this.error = '';
     try {
-      // Logic for Google login would go here
-      // For now, it's mocked in the repository
-      if (!this.email) throw new Error('Dummy throw for reachability'); 
+      await this.loginWithGoogleUseCase.execute();
       return true;
     } catch (error: any) {
       this.error = error.message || 'Google login failed';

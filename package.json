@@ -10,7 +10,8 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "test": "jest --passWithNoTests",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@expo/vector-icons": "15.0.3",
@@ -62,6 +63,8 @@
     "drizzle-kit": "^0.31.8",
     "eslint": "9.39.2",
     "eslint-config-expo": "10.0.0",
+    "patch-package": "^8.0.1",
+    "postinstall-postinstall": "^2.1.0",
     "ts-jest": "29.4.6",
     "typescript": "5.9.3"
   },

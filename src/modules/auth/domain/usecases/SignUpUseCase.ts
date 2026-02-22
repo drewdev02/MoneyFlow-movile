@@ -1,4 +1,6 @@
-// Caso de uso mock para registro
+import { User } from '../models/User';
+import { AuthRepository } from '../repositories/AuthRepository';
+
 export interface SignUpParams {
   name: string;
   email: string;
@@ -7,9 +9,9 @@ export interface SignUpParams {
 }
 
 export class SignUpUseCase {
-  async execute(params: SignUpParams): Promise<void> {
-    // Simula validación y espera
-    await new Promise((res) => setTimeout(res, 800));
+  constructor(private authRepository: AuthRepository) {}
+
+  async execute(params: SignUpParams): Promise<User> {
     if (!params.name || !params.email || !params.password || !params.repeatPassword) {
       throw new Error('All fields are required');
     }
@@ -19,7 +21,7 @@ export class SignUpUseCase {
     if (!params.email.includes('@')) {
       throw new Error('Invalid email');
     }
-    // Mock: éxito
-    return;
+
+    return this.authRepository.signUp(params.name, params.email, params.password);
   }
 }

@@ -1,9 +1,12 @@
+import { AuthRepository } from '../repositories/AuthRepository';
+
 export class PasswordRecoveryUseCase {
+  constructor(private authRepository: AuthRepository) {}
+
   async execute(email: string): Promise<void> {
-    await new Promise((res) => setTimeout(res, 800));
     if (!email) throw new Error('Email is required');
     if (!email.includes('@')) throw new Error('Invalid email');
-    // mock: success
-    return;
+    
+    return this.authRepository.recoverPassword(email);
   }
 }
